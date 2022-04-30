@@ -8,6 +8,7 @@
     "@mui/icons-material": "^5.6.0",
     "@mui/lab": "^5.0.0-alpha.76",
     "@mui/material": "^5.6.0",
+    "@mui/styles": "^5.6.1",
     "@testing-library/jest-dom": "^5.16.4",
     "@testing-library/react": "^11.2.7",
     "@testing-library/user-event": "^12.8.3",
@@ -34,6 +35,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
+  "homepage": "http://theshramik.com/",
   "eslintConfig": {
     "extends": [
       "react-app",
