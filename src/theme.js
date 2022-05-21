@@ -1,8 +1,8 @@
-import '@fontsource/roboto/300.css';
-import '@fontsource/roboto/400.css';
-import '@fontsource/roboto/500.css';
-import '@fontsource/roboto/700.css';
-import { createTheme } from '@mui/material';
+import '@fontsource/roboto/300.css'
+import '@fontsource/roboto/400.css'
+import '@fontsource/roboto/500.css'
+import '@fontsource/roboto/700.css'
+import { createTheme } from '@mui/material'
 
 const theme = createTheme({
   typography: {
@@ -213,7 +213,7 @@ const theme = createTheme({
   // typography: {
   //   fontFamily: ['Poppins']
   // }
-});
+})
 
 // theme.typography.h3 = {
 //   fontSize: '1.2rem',
@@ -223,6 +223,6 @@ const theme = createTheme({
 //   [theme.breakpoints.up('md')]: {
 //     fontSize: '0.5rem',
 //   },
-// };
+// }
 
 export default theme

@@ -6,6 +6,7 @@ import { Spinner } from './components/shared/Spinner'
 const Welcome = React.lazy(() => import('./components/WelcomePage/Welcome'))
 const AboutUs = React.lazy(() => import('./components/AboutUs/AboutUs'))
 const Login = React.lazy(() => import('./components/Login/Login'))
+const Register = React.lazy(() => import('./components/Register/Register'))
 const AppRouter = () => {
   return (
     <Suspense fallback={<Spinner/>}>
@@ -22,6 +23,10 @@ const AppRouter = () => {
           <Route
             path='login'
             element={<Login />}
+          />
+          <Route
+            path='register'
+            element={<Register />}
           />
         </Routes>
       </BrowserRouter>
