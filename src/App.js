@@ -5,6 +5,8 @@ import { ThemeProvider } from '@mui/material/styles'
 import CssBaseline from '@mui/material/CssBaseline'
 import AppRouter from './AppRouter'
 import { makeStyles } from '@mui/styles'
+import { AuthProvider } from './AuthContext'
+
 const useStyles = makeStyles(theme => ({
   app: {
     width: '100%',
@@ -17,11 +19,13 @@ const useStyles = makeStyles(theme => ({
 export default function App() {
   const classes = useStyles()
   return (
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
-      <div className={classes.app}>
-        <AppRouter />
-      </div>
-    </ThemeProvider>
+    <AuthProvider>
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
+        <div className={classes.app}>
+          <AppRouter />
+        </div>
+      </ThemeProvider>
+    </AuthProvider>
   );
 }

@@ -2,32 +2,26 @@
 import React, { Suspense } from 'react'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { Spinner } from './components/shared/Spinner'
-// import Welcome from './components/WelcomePage/Welcome'
-const Welcome = React.lazy(() => import('./components/WelcomePage/Welcome'))
-const AboutUs = React.lazy(() => import('./components/AboutUs/AboutUs'))
-const Login = React.lazy(() => import('./components/Login/Login'))
-const Register = React.lazy(() => import('./components/Register/Register'))
+import PrivateRoute from './PrivateRoute'
+import { publicRoutes, privateRoutes } from './route'
 const AppRouter = () => {
   return (
-    <Suspense fallback={<Spinner/>}>
+    <Suspense fallback={<Spinner />}>
       <BrowserRouter>
         <Routes>
-          <Route
-            path='/'
-            element={<Welcome />}
-          />
-          <Route
-            path='about'
-            element={<AboutUs />}
-          />
-          <Route
-            path='login'
-            element={<Login />}
-          />
-          <Route
-            path='register'
-            element={<Register />}
-          />
+          {publicRoutes.map(({ element: Component, path, exact }) => (
+            <Route
+              path={path}
+              key={path}
+              exact={exact}
+              element={<Component />}
+            />
+          ))}
+          {privateRoutes.map(({ element: Component, path, exact }) => (
+            <Route key={path} element={<PrivateRoute />}>
+              <Route path={path} exact={exact} element={<Component />} />
+            </Route>
+          ))}
         </Routes>
       </BrowserRouter>
     </Suspense>

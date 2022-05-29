@@ -115,6 +115,7 @@ const theme = createTheme({
       blue15: '#0062CC',
       blue16: '#005cbf',
       blue17: '#90CAF9',
+      blue18: '#A0E7E5'
     },
     red: {
       red1: '#E57171FC',

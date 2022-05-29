@@ -1,5 +1,5 @@
 import React from 'react'
-import PropTypes from 'prop-types';
+import PropTypes from 'prop-types'
 
 import { ColorlibConnector, ColorlibStepIconRoot } from '../shared/CustomStepper'
 import { constants } from '../../constants'
@@ -12,24 +12,32 @@ import Container from '@mui/material/Container/Container'
 
 import { makeStyles } from '@mui/styles'
 import theme from '../../theme'
-import UsersSelector from './UserSelector';
-import ActionButtons from './ActionButtons';
-import UserForm from '../shared/UserForm';
-import UserSettings from './UserSettings';
+import UsersSelector from './UserSelector'
+import ActionButtons from './ActionButtons'
+import UserForm from '../shared/UserForm'
+import UserSettings from './UserSettings'
+import Paper from '@mui/material/Paper'
+import VerifyEmail from './VerifyEmail'
+
 const useStyles = makeStyles(() => ({
+  root: {
+    height: '100vh',
+    display: 'flex !important',
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
   registerRoot: {
-    marginTop: 20,
-    [theme.breakpoints.down('md')]: {
-      marginTop: 10
+    padding: 20,
+    [theme.breakpoints.up('sm')]: {
+      width: 512
     }
   },
-  registerContainer: {
-    // padding: '50px 88px 0'
-    padding: '20px'
+  registerContent: {
+    paddingTop: '20px'
   }
 }))
 function ColorlibStepIcon(props) {
-  const { active, completed, className } = props;
+  const { active, completed, className } = props
 
   const icons = {
     1: <Icons.BADGE_TWO_TONE_ICON style={{ color: 'white' }} />,
@@ -40,7 +48,7 @@ function ColorlibStepIcon(props) {
     <ColorlibStepIconRoot ownerState={{ completed, active }} className={className}>
       {icons[String(props.icon)]}
     </ColorlibStepIconRoot>
-  );
+  )
 }
 
 ColorlibStepIcon.propTypes = {
@@ -48,7 +56,7 @@ ColorlibStepIcon.propTypes = {
   className: PropTypes.string,
   completed: PropTypes.bool,
   icon: PropTypes.node,
-};
+}
 
 function Register() {
   const classes = useStyles()
@@ -64,6 +72,7 @@ function Register() {
       ...prevState,
       ...obj
     }))
+    if (key === 'signUpType') handleNext()
   }
   const handleBack = () => {
     setState(prevState => ({
@@ -77,6 +86,12 @@ function Register() {
       activeStep: prevState.activeStep + 1
     }))
   }
+  // const handleRegister = (type, value) => {
+  //   setState(prevState => ({
+  //     ...prevState,
+  //     activeStep: prevState.activeStep + 1
+  //   }))
+  // }
   const saveData = async () => {
     console.log("saveData==>", state)
   }
@@ -84,29 +99,36 @@ function Register() {
     await saveData()
   }
   const lastStepIndex = 2
+  console.log('state==>', state)
   return (
-    <Container maxWidth="sm">
-      <div className={classes.registerRoot}>
-        <Stepper alternativeLabel activeStep={state.activeStep} connector={<ColorlibConnector />}>
-          {constants.REGISTER_STEPS.map((step) => (
-            <Step key={step.id}>
-              <StepLabel StepIconComponent={ColorlibStepIcon}>{step.label}</StepLabel>
-            </Step>
-          ))}
-        </Stepper>
-        <div className={classes.registerContainer}>
-          {
-            state.activeStep === 0 ? <UsersSelector handleChange={handleChange} />
-              : state.activeStep === 1 ? <UserForm view={true} register={true}></UserForm>
-                : state.activeStep === 2 && <UserSettings />
-          }
-          <ActionButtons
-            handleBack={state.activeStep > 0 && handleBack}
-            handleNext={state.activeStep < lastStepIndex && handleNext}
-            handleFinish={state.activeStep === lastStepIndex && handleFinish}
-          />
-        </div>
-      </div>
+    <Container className={classes.root}>
+      {state.showVerifyEmail ?
+        <VerifyEmail />
+        : <Paper elevation={3} className={classes.registerRoot}>
+          <Stepper alternativeLabel activeStep={state.activeStep} connector={<ColorlibConnector />}>
+            {constants.REGISTER_STEPS.map((step) => (
+              <Step key={step.id}>
+                <StepLabel StepIconComponent={ColorlibStepIcon} />
+              </Step>
+            ))}
+          </Stepper>
+          <div className={classes.registerContent}>
+            {
+              state.activeStep === 0 ? <UsersSelector state={state} handleChange={handleChange} />
+                : state.activeStep === 1 ? <UserForm state={state} handleChange={handleChange} view={true} register={true}></UserForm>
+                  : state.activeStep === 2 && <UserSettings />
+            }
+            <div style={{ margin: state.activeStep === 1 && '-50px 0 0 -16px' }}>
+              <ActionButtons
+                handleBack={state.activeStep > 0 && handleBack}
+                // handleNext={state.activeStep === 0 && handleNext}
+                // handleRegister={state.activeStep > 0  && state.activeStep < lastStepIndex && handleRegister}
+                handleFinish={state.activeStep === lastStepIndex && handleFinish}
+              />
+            </div>
+          </div>
+        </Paper>
+      }
     </Container>
   )
 }

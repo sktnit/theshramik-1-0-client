@@ -1,6 +1,7 @@
 import { Button } from '@mui/material'
 import { Box } from '@mui/system'
 import React from 'react'
+import { Icons } from '../shared/Icons'
 
 function ActionButtons(props) {
   return (
@@ -13,7 +14,7 @@ function ActionButtons(props) {
             onClick={props.handleBack}
             sx={{ mr: 1 }}
           >
-            Back
+            <Icons.ARROW_LEFT_ICON />&nbsp;Go Back
           </Button>
         }
         <Box sx={{ flex: '1 1 auto' }} />
@@ -28,6 +29,17 @@ function ActionButtons(props) {
             Next
           </Button>
         }
+        {props.handleRegister &&
+          <Button onClick={props.handleRegister}>
+            Register
+          </Button>
+        }
+        {props.handleLogin &&
+          <Button onClick={props.handleLogin}>
+            Login
+          </Button>
+        }
+
         {props.handleFinish &&
           <Button onClick={props.handleFinish}>
             Finish

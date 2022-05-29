@@ -41,14 +41,14 @@ export const CustomButton = styled(Button)(({
     '"Segoe UI Symbol"',
   ].join(','),
   '&:hover': {
-    backgroundColor: (variant === 'outlined' && 'none') || theme.palette.blue.blue14,
+    backgroundColor: (variant === 'outlined' && 'none') || '#A0E7E5',
     borderColor: theme.palette.blue.blue17,
     borderWidth: 1,
     boxShadow: 'none',
   },
   '&:active': {
     boxShadow: 'none',
-    backgroundColor: (variant === 'outlined' && 'none') || theme.palette.blue.blue15,
+    backgroundColor: (variant === 'outlined' && 'none') || '#A0E7E5',
     borderColor: theme.palette.blue.blue16,
   },
   '&:focus': {

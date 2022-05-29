@@ -2,7 +2,9 @@ import { Container } from '@mui/material'
 import React from 'react'
 import UserForm from '../shared/UserForm'
 import { makeStyles } from '@mui/styles'
-import theme from '../../theme'
+// import theme from '../../theme'
+import Paper from '@mui/material/Paper';
+import VerifyEmail from '../Register/VerifyEmail'
 
 const useStyles = makeStyles(() => ({
   loginRoot: {
@@ -13,20 +15,41 @@ const useStyles = makeStyles(() => ({
     justifyContent: 'center',
     alignItems: 'center'
   },
-  registerContainer: {
-    // padding: '50px 88px 0'
-    padding: '20px'
-  }
+  loginPaper: {
+    // width: 512
+    // marginTop: 20,
+    // [theme.breakpoints.down('md')]: {
+    //   marginTop: 10
+    // },
+    // [theme.breakpoints.up('sm')]: {
+    //   width: 600,
+    //   minHeight: 600
+    // }
+  },
 }))
 
 function Login() {
   const classes = useStyles()
+  const [state, setState] = React.useState({})
+  const handleChange = (key, value) => {
+    const obj = {
+      [key]: value
+    }
+    setState(prevState => ({
+      ...prevState,
+      ...obj
+    }))
+  }
+
   return (
-    <div>
-      <Container maxWidth="xs" height={'100%'} className={classes.loginRoot}>
-        <UserForm login={true}></UserForm>
-      </Container>
-    </div>
+    <Container className={classes.loginRoot}>
+      {state.showVerifyEmail ?
+        <VerifyEmail />
+        : <Paper elevation={3} className={classes.loginPaper}>
+          <UserForm login={true} state={state} handleChange={handleChange}></UserForm>
+        </Paper>
+      }
+    </Container>
   )
 }
 

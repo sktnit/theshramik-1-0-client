@@ -22,5 +22,9 @@ export const constants = {
   USER_TYPES: {
     'EMPLOYEE': '0',
     'EMPLOYER': '1'
+  },
+  USER_TYPES_NUM_TO_TEXT_MAPPING:{
+    '0': 'Employee',
+    '1': 'Employer'
   }
 }
