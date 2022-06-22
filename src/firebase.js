@@ -10,17 +10,22 @@ import {
   signOut,
   signInWithPhoneNumber,
   RecaptchaVerifier,
-  updateProfile,
+  // updateProfile,
   sendEmailVerification
 } from "firebase/auth"
 import {
   getFirestore,
   query,
   getDocs,
+  getDoc,
   collection,
+  doc,
   where,
   addDoc,
+  updateDoc,
+  setDoc
 } from "firebase/firestore"
+
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 // Your web app's Firebase configuration
@@ -45,7 +50,7 @@ const signInWithGoogle = async () => {
   try {
     const res = await signInWithPopup(auth, googleProvider)
     const user = res.user
-    const q = query(collection(db, "users"), where("uid", "==", user.uid))
+    const q = query(collection(db, "User"), where("uid", "==", user.uid))
     const docs = await getDocs(q)
     if (docs.docs.length === 0) {
       await addDoc(collection(db, "users"), {
@@ -56,45 +61,55 @@ const signInWithGoogle = async () => {
       })
     }
   } catch (err) {
-    console.error(err)
-    alert(err.message)
+    console.error('SignInWithGoogleException', err)
   }
 }
 
 const logInWithEmailAndPassword = async (email, password) => {
-  await signInWithEmailAndPassword(auth, email, password)
+  try {
+    await signInWithEmailAndPassword(auth, email, password)
+  } catch (error) {
+    console.log('LogInWithEmailAndPassword', error)
+  }
 }
 
-const registerWithEmailAndPassword = async (name, email, password) => {
-  const res = await createUserWithEmailAndPassword(auth, email, password)
-  console.log('res==>', res)
-  await sendEmailVerification(auth.currentUser)
-  // const user = res.user
-  // await addDoc(collection(db, "users"), {
-  //   uid: user.uid,
-  //   name,
-  //   authProvider: "local",
-  //   email,
-  // })
-
+const registerWithEmailAndPassword = async (name, email, password, userType) => {
+  try {
+    const { user } = await createUserWithEmailAndPassword(auth, email, password)
+    if (user) {
+      await writeUserData({
+        uid: user.uid,
+        name: name,
+        authProvider: "locale",
+        email: email,
+        emailVerified: user.emailVerified,
+        isAnonymous: user.isAnonymous,
+        createdAt: user.metadata && user.metadata.createdAt,
+        role: userType,
+        active: false
+      })
+    }
+    await sendEmailVerification(auth.currentUser)
+  } catch (error) {
+    console.log('RegisterWithEmailAndPasswordException', error)
+  }
 }
 
 const sendPasswordReset = async (email) => {
   try {
     await sendPasswordResetEmail(auth, email)
-    alert("Password reset link sent!")
+    console.log("Password reset link sent!")
   } catch (err) {
-    console.error(err)
-    alert(err.message)
+    console.log('SendPasswordResetException', err)
   }
 }
 const resendEmailVerificationLink = async () => {
   try {
     await sendEmailVerification(auth.currentUser)
-    alert("Verification link sent!")
+    console.log("Verification link sent!")
   } catch (err) {
-    console.error(err)
-    alert(err.message)
+    console.log('ResendEmailVerificationLinkException', err)
+    console.log(err.message)
   }
 }
 
@@ -102,19 +117,30 @@ const logout = () => {
   signOut(auth)
 }
 
+const generateRecaptcha = async (phoneNumber) => {
+  return window.recaptchaVerifier = new RecaptchaVerifier('recaptcha-container', {
+    'size': 'invisible',
+    'callback': (response) => {
+      if (response) {
+        return response
+      } else {
+        window.recaptchaVerifier.recaptcha.reset()
+        window.recaptchaVerifier.clear()
+        console.log('Invalid captcha verification.')
+      }
+    }
+  }, auth)
+}
+
 const signInWithPhone = async (mynumber) => {
   if (mynumber === "" || mynumber.length < 10) return
-  let verify = new RecaptchaVerifier('recaptcha-container')
-  await signInWithPhoneNumber(mynumber, verify)
-  // .then((result) => {
-  //   // setfinal(result)
-  //   alert("code sent")
-  //   // setshow(true)
-  // })
-  // .catch((err) => {
-  //   alert(err)
-  //   window.location.reload()
-  // })
+  try {
+    let appVerifier = await generateRecaptcha()
+    let confirmationResult = await signInWithPhoneNumber(auth, mynumber, appVerifier)
+    window.confirmationResult = confirmationResult
+  } catch (error) {
+    console.log('SignInWithPhoneException', error)
+  }
 }
 
 // Validate OTP
@@ -125,8 +151,46 @@ const validateOtp = async (otp, enteredOtp) => {
     await enteredOtp.confirm(otp)
   } catch (err) {
     console.log(err)
-    alert("Wrong code")
+    console.log("Wrong code")
   }
+}
+
+const verifyOTP = async (otp) => {
+  try {
+    let confirmationResult = window.confirmationResult
+    let result = await confirmationResult.confirm(otp)
+    const user = result.user
+    if (user) {
+      const userData = await getUserData(user.uid)
+      if (!userData || !userData.data()) {
+        await writeUserData({
+          uid: user.uid,
+          phoneNumber: user.phoneNumber,
+          phoneVerified: true,
+          createdAt: user.metadata && user.metadata.createdAt,
+          active: false
+        })
+      }
+    }
+  } catch (error) {
+    console.log('VerifyOTPException', error)
+    console.log("Wrong code")
+  }
+}
+
+async function writeUserData(user) {
+  const collectionRef = collection(db, "User")
+  return await setDoc(doc(collectionRef, user.uid), user)
+}
+
+async function getUserData(uid) {
+  const collectionRef = collection(db, "User")
+  return await getDoc(doc(collectionRef, uid))
+}
+
+async function updateUserData(docId, user) {
+  const collectionRef = collection(db, "User")
+  return await updateDoc(doc(collectionRef, docId), user)
 }
 
 export {
@@ -139,5 +203,9 @@ export {
   sendPasswordReset,
   logout,
   validateOtp,
-  resendEmailVerificationLink
+  resendEmailVerificationLink,
+  generateRecaptcha,
+  verifyOTP,
+  updateUserData,
+  getUserData
 }

@@ -14,10 +14,11 @@ import { makeStyles } from '@mui/styles'
 import theme from '../../theme'
 import UsersSelector from './NewUserSelector'
 import ActionButtons from './ActionButtons'
-import UserForm from '../shared/UserForm'
+import UserForm from './UserForm'
 import UserSettings from './UserSettings'
 import Paper from '@mui/material/Paper'
 import VerifyEmail from './VerifyEmail'
+import { Box } from '@mui/material'
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -30,7 +31,7 @@ const useStyles = makeStyles(() => ({
   registerRoot: {
     padding: 20,
     [theme.breakpoints.up('sm')]: {
-      // width: 512
+      width: 650
     }
   },
   registerContent: {
@@ -59,11 +60,10 @@ ColorlibStepIcon.propTypes = {
   icon: PropTypes.node,
 }
 
-function Register() {
+function NewRegister() {
   const classes = useStyles()
   const [state, setState] = React.useState({
-    activeStep: 0,
-    userType: '0'
+    activeStep: 0
   })
   const handleChange = (key, value) => {
     const obj = {
@@ -73,7 +73,7 @@ function Register() {
       ...prevState,
       ...obj
     }))
-    if (key === 'signUpType') handleNext()
+    if (key === 'userType' || key === 'signUpType') handleNext()
   }
   const handleBack = () => {
     setState(prevState => ({
@@ -87,34 +87,32 @@ function Register() {
       activeStep: prevState.activeStep + 1
     }))
   }
-  // const handleRegister = (type, value) => {
-  //   setState(prevState => ({
-  //     ...prevState,
-  //     activeStep: prevState.activeStep + 1
-  //   }))
-  // }
-  const lastStepIndex = 2
+  
+  // const lastStepIndex = 2
   return (
     <Container className={classes.root}>
       {state.showVerifyEmail ?
         <VerifyEmail />
         : <Paper elevation={0} className={classes.registerRoot}>
-          <Stepper alternativeLabel activeStep={state.activeStep} connector={<ColorlibConnector />}>
-            {constants.REGISTER_STEPS.map((step) => (
-              <Step key={step.id}>
-                <StepLabel StepIconComponent={ColorlibStepIcon} />
-              </Step>
-            ))}
-          </Stepper>
+          <Box sx={{ marginBottom: '1rem' }}>
+            <Stepper alternativeLabel activeStep={state.activeStep} connector={<ColorlibConnector />}>
+              {constants.REGISTER_STEPS.map((step, index) => (
+                <Step key={`steps${index}`}>
+                  <StepLabel StepIconComponent={ColorlibStepIcon}>{step.label}</StepLabel>
+                </Step>
+              ))}
+            </Stepper>
+          </Box>
           <div className={classes.registerContent}>
             {
               state.activeStep === 0 ? <UsersSelector state={state} handleChange={handleChange} />
-                : state.activeStep === 1 ? <UserForm state={state} handleChange={handleChange} view={true} register={true}></UserForm>
-                  : state.activeStep === 2 && <UserSettings />
+                : state.activeStep === 1 ? <UserSettings state={state} handleChange={handleChange}/>
+                  : state.activeStep === 2 && <UserForm state={state} handleChange={handleChange} view={true}/>
             }
-            <div style={{ margin: state.activeStep === 1 && state.signUpType !== 'phone' && '-50px 0 0 -16px' }}>
+            <div style={{ margin: state.activeStep === 2 && state.signUpType !== 'phone' && '-50px 0 0 -16px' }}>
               <ActionButtons
                 handleBack={state.activeStep > 0 && handleBack}
+                // marginLeftBB={state.activeStep === 1 && 5}
               // handleNext={state.activeStep === 0 && handleNext}
               // handleRegister={state.activeStep > 0  && state.activeStep < lastStepIndex && handleRegister}
               // handleFinish={state.activeStep === lastStepIndex && handleFinish}
@@ -127,4 +125,4 @@ function Register() {
   )
 }
 
-export default Register
+export default NewRegister

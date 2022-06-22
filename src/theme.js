@@ -209,6 +209,12 @@ const theme = createTheme({
       Black: 800,
       ExtraBlack: 900,
       UltraBlack: 999
+    },
+    card: {
+      yellow: '#ff9900',
+      violet: '#4d137f',
+      new: '#203f52',
+      new2: '#34241e'
     }
   },
   // typography: {

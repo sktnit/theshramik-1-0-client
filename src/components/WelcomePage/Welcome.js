@@ -6,7 +6,7 @@ import { Link, useNavigate, Outlet } from 'react-router-dom'
 import { Spinner } from '../shared/Spinner'
 
 import { CustomButton } from '../shared/CustomButton'
-import { useMediaQuery } from '@mui/material'
+import useMediaQuery from '@mui/material/useMediaQuery/useMediaQuery'
 // const { CustomButton } = React.lazy(() => import('../shared/CustomButton'))
 
 const AboutUs = React.lazy(() => import('../AboutUs/AboutUs'))

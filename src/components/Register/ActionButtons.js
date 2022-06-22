@@ -12,7 +12,7 @@ function ActionButtons(props) {
             color="inherit"
             disabled={props.backDisabled}
             onClick={props.handleBack}
-            sx={{ mr: 1 }}
+            sx={{ mr: 1, ml: props.marginLeftBB}}
           >
             <Icons.ARROW_LEFT_ICON />&nbsp;Go Back
           </Button>

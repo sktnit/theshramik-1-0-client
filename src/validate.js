@@ -18,7 +18,7 @@ const emailValidator = () => {
 }
 
 const phoneValidator = () => {
-  const sValidNumber = '^((\\+*)((0[ -]*)*|((91 )*))((\\d{12})+|(\\d{10})+))|\\d{5}([- ]*)\\d{8}$'
+  const sValidNumber = '^((\\d{12}))$'
   return sValidNumber
 }
 const useValidate = ({
@@ -64,7 +64,7 @@ const useValidate = ({
       .required('Phone Number is required')
       .matches(
         phoneValidator(),
-        'Phone number is invalid'
+        `Invalid phone number.`
       )
   }
   const validationSchema = Yup.object().shape(validationShape)

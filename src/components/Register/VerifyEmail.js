@@ -1,8 +1,8 @@
-import { useConsumer } from "../../AuthContext"
+import { useAuthData } from "../../AuthContext"
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { makeStyles } from '@mui/styles'
-import { resendEmailVerificationLink } from '../../firebase'
+import { resendEmailVerificationLink, updateUserData } from '../../firebase'
 const useStyles = makeStyles(() => ({
   verifyEmail: {
     width: '90%',
@@ -27,25 +27,27 @@ const useStyles = makeStyles(() => ({
   }
 }))
 
-function VerifyEmail(props) {
+function VerifyEmail() {
   const classes = useStyles()
-  const { currentUser } = useConsumer()
+  const { currentUser, timeActive, setTimeActive} = useAuthData()
   const [time, setTime] = useState(60)
-  const { timeActive, setTimeActive } = useConsumer()
   const navigate = useNavigate()
 
   useEffect(() => {
     const interval = setInterval(() => {
       currentUser?.reload()
-        .then(() => {
-          if (currentUser?.emailVerified) {
-            clearInterval(interval)
-            navigate('/user-profile')
-          }
-        })
-        .catch((err) => {
-          alert(err.message)
-        })
+      .then(async () => {
+        if(currentUser?.emailVerified){
+          clearInterval(interval)
+          await updateUserData(currentUser.uid, {
+            emailVerified: true
+          })
+          navigate('/user-details')
+        }
+      })
+      .catch((err) => {
+        alert(err.message)
+      })
     }, 1000)
   }, [navigate, currentUser])
 
@@ -68,7 +70,7 @@ function VerifyEmail(props) {
       await resendEmailVerificationLink()
       setTimeActive(true)
     } catch (err) {
-      alert(err.message)
+      console.log(err.message)
     }
   }
 
