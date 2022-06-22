@@ -41,7 +41,7 @@ const useStyles = makeStyles((theme) => ({
     boxSizing: 'border-box',
     display: 'flex',
     flexflow: 'row wrap',
-    width: '100%',
+    width: 'fit-content',
     margin: '0px',
     flexBasis: '50%',
     '-webkit-box-flex': 0,
@@ -50,6 +50,10 @@ const useStyles = makeStyles((theme) => ({
     '-webkit-box-align': 'center',
     alignItems: 'center',
     // border: '2px solid red'
+    [theme.breakpoints.down('sm')]: {
+      flexBasis: '100%',
+      maxWidth: '100%',  
+    }
   }
 }))
 function AboutLandingPage() {
@@ -63,16 +67,17 @@ function AboutLandingPage() {
       <Box className={classes.rootBackground}>
         <Box className={classes.container}>
           <Grid container spacing={4} className={classes.gridLayout}>
-            <Grid item xs={12} md={6} className={classes.leftContainer}>
+            <Grid item sm={12} md={6} className={classes.leftContainer}>
               <Box sx={{ padding: '16px 0 0 16px' }}>
                 <Box sx={{ marginBottom: '16px' }}>
                   <Typography variant='h2'
                     sx={{
                       fontFamily: 'Open Sans',
-                      fontSize: '3rem',
+                      fontSize: {md: '3rem', sm: '2.5rem'},
                       lineHeight: 1.2,
                       color: 'rgb(45, 55, 72)',
-                      fontWeight: 700
+                      fontWeight: 700,
+                      textAlign:{sm: 'center', md:'left'}
                     }}
                   >
                     Social Platfrom<br /> For Service Seekers.
@@ -82,18 +87,18 @@ function AboutLandingPage() {
                   <Typography variant='h6'
                     sx={{
                       fontFamily: 'Open Sans',
-                      fontSize: '1.25rem',
+                      fontSize: {md: '1.25rem', sm: '1rem'},
                       lineHeight: 1.5,
                       color: 'rgb(100, 110, 115)',
                       fontWeight: 400
                     }}
                   >
-                    Find your Shramik, save your precious time <br />and get your job done.
+                    Find your Shramik, book a call and get your work done within time.
                   </Typography>
                 </Box>
               </Box>
             </Grid>
-            <Grid item xs={12} md={6} className={classes.leftContainer}>
+            <Grid item sm={12} md={6} className={classes.leftContainer}>
               <Box sx={{ padding: '16px 16px 0 0' }}>
                 <img src={ShramikCallingPic} alt='' style={{ width: '512px', height: '512px' }} />
               </Box>
