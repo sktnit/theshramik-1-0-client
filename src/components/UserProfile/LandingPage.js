@@ -1,12 +1,12 @@
 import React from 'react'
-import { makeStyles } from '@mui/styles'
+import makeStyles from '@mui/styles/makeStyles'
 import Box from '@mui/material/Box'
 import CssBaseline from '@mui/material/CssBaseline'
 import Typography from '@mui/material/Typography'
 import Container from '@mui/material/Container'
-import ProfileCard from './ProfileCard'
+// import ProfileCard from './ProfileCard'
 import UserProfileDrawer from './UserProfileDrawer'
-import CustomAppBar from './CustomAppBar'
+// import CustomAppBar from './CustomAppBar'
 const drawerWidth = 280
 const useStyles = makeStyles(() => ({
   landingPageRoot: {
@@ -25,7 +25,7 @@ function LandingPage(props) {
   return (
     <Box className={classes.landingPageRoot}>
       <CssBaseline />
-      <UserProfileDrawer open={open} handleDrawer={handleDrawer} drawerWidth={drawerWidth} />
+      <UserProfileDrawer open={open} handleDrawer={handleDrawer} drawerWidth={drawerWidth} hideDrawer={props.hideDrawer}/>
       <Box
         component="main"
         sx={{ padding: '116px 16px', flexGrow: 1, width: { sm: `calc(100% - ${drawerWidth}px)` } }}

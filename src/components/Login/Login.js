@@ -1,8 +1,7 @@
-import { Container } from '@mui/material'
+import Container from '@mui/material/Container'
 import React from 'react'
 import UserForm from './UserForm'
-import { makeStyles } from '@mui/styles'
-// import theme from '../../theme'
+import makeStyles from '@mui/styles/makeStyles'
 import Paper from '@mui/material/Paper';
 import VerifyEmail from '../Register/VerifyEmail'
 

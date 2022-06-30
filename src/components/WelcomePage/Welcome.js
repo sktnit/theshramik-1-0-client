@@ -1,12 +1,14 @@
 import Typography from '@mui/material/Typography'
 import React, { Suspense } from 'react'
-import { makeStyles } from '@mui/styles'
+import makeStyles from '@mui/styles/makeStyles'
 import Box from '@mui/material/Box'
 import { Link, useNavigate, Outlet } from 'react-router-dom'
 import { Spinner } from '../shared/Spinner'
 
 import { CustomButton } from '../shared/CustomButton'
 import useMediaQuery from '@mui/material/useMediaQuery/useMediaQuery'
+import Theme from '../../theme'
+
 // const { CustomButton } = React.lazy(() => import('../shared/CustomButton'))
 
 const AboutUs = React.lazy(() => import('../AboutUs/AboutUs'))
@@ -89,9 +91,9 @@ function Welcome() {
               <CustomButton
                 key={`button${item.id}`}
                 variant='outlined'
-                fontSize={smallScreen ? '1rem' : '1.3rem'}
+                fontSize={smallScreen ? '1.2rem' : '1.5rem'}
                 fontFamily='Open Sans'
-                width={smallScreen ? '18ch' : '24ch'}
+                width={smallScreen ? '24ch' : '24ch'}
                 fontWeight='600'
                 onClick={() => navigate(item.link)}
               >
@@ -103,9 +105,10 @@ function Welcome() {
         <CustomButton
           key={`buttoncreate`}
           // variant='outlined'
-          fontSize={smallScreen ? '1rem' : '1.3rem'}
+          fontcolor={Theme.palette.white.white1}
+          fontSize={smallScreen ? '1.2rem' : '1.5rem'}
           fontFamily='Open Sans'
-          width={smallScreen ? '18ch' : '24ch'}
+          width={smallScreen ? '24ch' : '32ch'}
           fontWeight='600'
           onClick={() => navigate('register')}
         >

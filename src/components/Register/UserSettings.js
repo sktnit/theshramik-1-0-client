@@ -1,7 +1,7 @@
 import React from 'react'
 // import useMediaQuery from '@mui/material/useMediaQuery'
 import { constants } from '../../constants'
-import { makeStyles } from '@mui/styles'
+import makeStyles from '@mui/styles/makeStyles'
 import Typography from '@mui/material/Typography'
 import Grid from '@mui/material/Grid'
 import CustomCard from '../UserProfile/CustomCard'

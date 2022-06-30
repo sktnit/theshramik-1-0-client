@@ -1,23 +1,16 @@
 import * as React from 'react'
 import Box from '@mui/material/Box'
 import Drawer from '@mui/material/Drawer'
-import AppBar from '@mui/material/AppBar'
-import CssBaseline from '@mui/material/CssBaseline'
-import Toolbar from '@mui/material/Toolbar'
 import List from '@mui/material/List'
-import Typography from '@mui/material/Typography'
-import Divider from '@mui/material/Divider'
 import ListItem from '@mui/material/ListItem'
 import ListItemButton from '@mui/material/ListItemButton'
 import ListItemIcon from '@mui/material/ListItemIcon'
-import ListItemText from '@mui/material/ListItemText'
-import { makeStyles } from '@mui/styles'
+import makeStyles from '@mui/styles/makeStyles'
 import { Icons } from '../shared/Icons'
-import { Icon, Tooltip } from '@mui/material'
-import FbIcon from '../../media/facebook.svg'
+import Icon from '@mui/material/Icon'
+import Tooltip from '@mui/material/Tooltip'
 import TwitterIcon from "../../media/twitter.svg"
 import InstagramIcon from "../../media/instagram.svg"
-import Theme from '../../theme'
 const drawerWidth = 75
 
 const useStyles = makeStyles((theme) => ({

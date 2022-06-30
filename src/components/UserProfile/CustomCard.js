@@ -1,5 +1,5 @@
 import React from 'react'
-import { makeStyles } from '@mui/styles'
+import makeStyles from '@mui/styles/makeStyles'
 import Typography from '@mui/material/Typography'
 import CardActionArea from '@mui/material/CardActionArea'
 import Card from '@mui/material/Card'

@@ -10,7 +10,7 @@ import Step from '@mui/material/Step/Step'
 import StepLabel from '@mui/material/StepLabel/StepLabel'
 import Container from '@mui/material/Container/Container'
 
-import { makeStyles } from '@mui/styles'
+import makeStyles from '@mui/styles/makeStyles'
 import theme from '../../theme'
 import UsersSelector from './NewUserSelector'
 import ActionButtons from './ActionButtons'
@@ -18,7 +18,7 @@ import UserForm from './UserForm'
 import UserSettings from './UserSettings'
 import Paper from '@mui/material/Paper'
 import VerifyEmail from './VerifyEmail'
-import { Box } from '@mui/material'
+import Box from '@mui/material/Box'
 
 const useStyles = makeStyles(() => ({
   root: {

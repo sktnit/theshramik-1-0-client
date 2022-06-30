@@ -1,7 +1,7 @@
 import { useAuthData } from "../../AuthContext"
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { makeStyles } from '@mui/styles'
+import makeStyles from '@mui/styles/makeStyles'
 import { resendEmailVerificationLink, updateUserData } from '../../firebase'
 const useStyles = makeStyles(() => ({
   verifyEmail: {

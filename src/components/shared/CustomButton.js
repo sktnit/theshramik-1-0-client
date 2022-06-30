@@ -12,7 +12,7 @@ export const CustomButton = styled(Button)(({
   borderColor,
   fontFamily,
   variant,
-  color,
+  fontcolor,
   width,
   fontWeight
 }) => ({
@@ -21,7 +21,7 @@ export const CustomButton = styled(Button)(({
   fontSize: fontSize || 16,
   padding: padding || '6px 12px',
   border: border || '1px solid',
-  color: color || theme.liteMode.text,
+  color: fontcolor || theme.liteMode.text,
   lineHeight: lineHeight || 1.5,  
   backgroundColor: (variant === 'outlined' && 'none') || backgroundColor || theme.palette.primary.main,
   borderColor: borderColor || theme.palette.primary.main,
@@ -40,11 +40,13 @@ export const CustomButton = styled(Button)(({
     '"Segoe UI Emoji"',
     '"Segoe UI Symbol"',
   ].join(','),
+  transition: '0.2s',
   '&:hover': {
     backgroundColor: (variant === 'outlined' && 'none') || '#A0E7E5',
     borderColor: theme.palette.blue.blue17,
     borderWidth: 1,
     boxShadow: 'none',
+    transform: 'scale(1.1)'
   },
   '&:active': {
     boxShadow: 'none',

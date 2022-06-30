@@ -1,11 +1,18 @@
-import { Box, Container, Grid, Icon, SvgIcon, Toolbar, Typography } from '@mui/material'
 import React from 'react'
-import { makeStyles } from '@mui/styles'
-import CustomToolbar from '../UserProfile/CustomToolbar'
+import Box from '@mui/material/Box'
+import Card from '@mui/material/Card'
+import CardMedia from '@mui/material/CardMedia'
+import Container from '@mui/material/Container'
+import Grid from '@mui/material/Grid'
+import Toolbar from '@mui/material/Toolbar'
+import Typography from '@mui/material/Typography'
+import makeStyles from '@mui/styles/makeStyles'
 import useMediaQuery from '@mui/material/useMediaQuery/useMediaQuery'
-import { styled, useTheme } from '@mui/material/styles'
+import useTheme from '@mui/material/styles/useTheme'
 import ShramikCallingPic from "../../media/shramikPic.svg"
-
+import { Link } from 'react-router-dom'
+import { CustomButton } from '../shared/CustomButton'
+import Theme from '../../theme'
 const useStyles = makeStyles((theme) => ({
   root: {
     // backgroundColor: theme.palette.white.white1,
@@ -27,7 +34,10 @@ const useStyles = makeStyles((theme) => ({
     paddingLeft: '16px',
     paddingRight: '16px',
     paddingTop: '92px',
-    paddingBottom: '64px'
+    paddingBottom: '64px',
+    [theme.breakpoints.down('sm')]: {
+      paddingTop: '64px'
+    }
   },
   gridLayout: {
     boxSizing: 'border-box',
@@ -35,7 +45,11 @@ const useStyles = makeStyles((theme) => ({
     flexFlow: 'row wrap',
     marginTop: '-32px',
     width: 'calc(100% + 32px)',
-    marginLeft: '-32px'
+    marginLeft: '-32px',
+    [theme.breakpoints.down('sm')]: {
+      width: 'calc(100% + 10px)',
+      marginLeft: '-10px',
+    }
   },
   leftContainer: {
     boxSizing: 'border-box',
@@ -52,8 +66,17 @@ const useStyles = makeStyles((theme) => ({
     // border: '2px solid red'
     [theme.breakpoints.down('sm')]: {
       flexBasis: '100%',
-      maxWidth: '100%',  
+      maxWidth: '100%'
     }
+  },
+  imageStyle: {
+    // [theme.breakpoints.down('sm')]: {
+    //   aspectRatio: '16 / 9',
+    //   objectFit: 'contain'
+    // }
+  },
+  textDecorationNone: {
+    textDecoration: 'none !important'
   }
 }))
 function AboutLandingPage() {
@@ -66,18 +89,17 @@ function AboutLandingPage() {
       <Toolbar />
       <Box className={classes.rootBackground}>
         <Box className={classes.container}>
-          <Grid container spacing={4} className={classes.gridLayout}>
+          <Grid container spacing={{ md: 4, sm: 2 }} className={classes.gridLayout}>
             <Grid item sm={12} md={6} className={classes.leftContainer}>
               <Box sx={{ padding: '16px 0 0 16px' }}>
                 <Box sx={{ marginBottom: '16px' }}>
                   <Typography variant='h2'
                     sx={{
                       fontFamily: 'Open Sans',
-                      fontSize: {md: '3rem', sm: '2.5rem'},
+                      fontSize: { md: '3rem', sm: '2.5rem' },
                       lineHeight: 1.2,
                       color: 'rgb(45, 55, 72)',
-                      fontWeight: 700,
-                      textAlign:{sm: 'center', md:'left'}
+                      fontWeight: 700
                     }}
                   >
                     Social Platfrom<br /> For Service Seekers.
@@ -87,7 +109,7 @@ function AboutLandingPage() {
                   <Typography variant='h6'
                     sx={{
                       fontFamily: 'Open Sans',
-                      fontSize: {md: '1.25rem', sm: '1rem'},
+                      fontSize: { md: '1.25rem', sm: '1rem' },
                       lineHeight: 1.5,
                       color: 'rgb(100, 110, 115)',
                       fontWeight: 400
@@ -96,11 +118,39 @@ function AboutLandingPage() {
                     Find your Shramik, book a call and get your work done within time.
                   </Typography>
                 </Box>
+                <Box sx={{ display: { md: 'none', '600px': 'flex' }, marginTop: '18px'}}>
+                  <Link
+                    to={{
+                      pathname: '/login'
+                    }}
+                    className={classes.textDecorationNone}
+                  >
+                    <CustomButton
+                      // variant='outlined'
+                      fontSize='1.2rem'
+                      fontFamily='Open Sans'
+                      width='18ch'
+                      fontWeight='600'
+                      fontcolor={Theme.palette.white.white1}
+                    >
+                      Login
+                    </CustomButton>
+                  </Link>
+                </Box>
               </Box>
             </Grid>
             <Grid item sm={12} md={6} className={classes.leftContainer}>
-              <Box sx={{ padding: '16px 16px 0 0' }}>
-                <img src={ShramikCallingPic} alt='' style={{ width: '512px', height: '512px' }} />
+              <Box sx={{ padding: '16px 16px 0 0', width: '100% !important'}}>
+                <Card sx={{ width: '100%', boxShadow: 'none' }}>
+                  <CardMedia
+                    component="img"
+                    sx={{ width: '100%', height: 'auto' }}
+                    className={classes.imageStyle}
+                    image={ShramikCallingPic}
+                    alt=""
+                  />
+                </Card>
+                {/* <img src={ShramikCallingPic} alt='' style={{ width: '512px', height: '512px' }} /> */}
               </Box>
             </Grid>
           </Grid>

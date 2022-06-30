@@ -65,7 +65,7 @@ function CustomAppBar(props) {
   }
 
   const handleCloseNavMenu = (routeLink) => {
-    if(routeLink){
+    if (routeLink) {
       navigate(routeLink)
     }
     setAnchorElNav(null)
@@ -75,6 +75,7 @@ function CustomAppBar(props) {
     setAnchorElUser(null)
   }
   const lg = useMediaQuery((theme) => theme.breakpoints.up('lg'))
+  const sm = useMediaQuery((theme) => theme.breakpoints.down('sm'))
   return (
     <AppBar
       position="fixed"
@@ -86,7 +87,7 @@ function CustomAppBar(props) {
     >
       <CustomToolbar disableGutters={true}
         style={{
-          padding: theme.spacing(0, 5),
+          padding: sm ? theme.spacing(0, 2) : theme.spacing(0, 5),
           height: lg ? '92px' : '64px',
           display: 'flex',
           alignItems: 'center',
@@ -203,7 +204,7 @@ function CustomAppBar(props) {
                   }}
                 >
                   {pages.map((page) => (
-                    <MenuItem key={page.title} onClick={()=>handleCloseNavMenu(page.routeLink)}>
+                    <MenuItem key={page.title} onClick={() => handleCloseNavMenu(page.routeLink)}>
                       <Typography textAlign="center">{page.title}</Typography>
                     </MenuItem>
                   ))}

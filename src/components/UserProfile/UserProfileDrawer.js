@@ -1,19 +1,19 @@
-import PropTypes from 'prop-types'
 import React from 'react'
-import { makeStyles } from '@mui/styles'
+// import PropTypes from 'prop-types'
+// import makeStyles from '@mui/styles/makeStyles'
 import { styled, useTheme } from '@mui/material/styles'
 import MuiDrawer from '@mui/material/Drawer'
-import List from '@mui/material/List'
-import MenuIcon from '@mui/icons-material/Menu'
-import ChevronLeftIcon from '@mui/icons-material/ChevronLeft'
-import ChevronRightIcon from '@mui/icons-material/ChevronRight'
-import ListItem from '@mui/material/ListItem'
-import ListItemButton from '@mui/material/ListItemButton'
-import ListItemIcon from '@mui/material/ListItemIcon'
-import ListItemText from '@mui/material/ListItemText'
-import InboxIcon from '@mui/icons-material/MoveToInbox'
-import { Avatar, Badge, Box, Button, Container, Divider, IconButton, Menu, MenuItem, Tooltip, Typography } from '@mui/material'
-import MailIcon from '@mui/icons-material/Mail'
+// import List from '@mui/material/List'
+// import MenuIcon from '@mui/icons-material/Menu'
+// import ChevronLeftIcon from '@mui/icons-material/ChevronLeft'
+// import ChevronRightIcon from '@mui/icons-material/ChevronRight'
+// import ListItem from '@mui/material/ListItem'
+// import ListItemButton from '@mui/material/ListItemButton'
+// import ListItemIcon from '@mui/material/ListItemIcon'
+// import ListItemText from '@mui/material/ListItemText'
+// import InboxIcon from '@mui/icons-material/MoveToInbox'
+import Box from '@mui/material/Box'
+import Typography from '@mui/material/Typography'
 import CustomToolbar from './CustomToolbar'
 import CustomAppBar from './CustomAppBar'
 import useMediaQuery from '@mui/material/useMediaQuery/useMediaQuery'
@@ -95,14 +95,14 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 )
 
 export const UserProfileDrawer = (props) => {
-  const { open, handleDrawer, drawerWidth } = props
+  const { open, handleDrawer, drawerWidth, hideDrawer } = props
   const theme = useTheme()
   const lg = useMediaQuery((theme) => theme.breakpoints.up('lg'))
 
   return (
     <>
       <CustomAppBar open={open} drawerWidth={drawerWidth} />
-      <Drawer variant="permanent" open={open} drawerWidth={drawerWidth}>
+      {!hideDrawer && <Drawer variant="permanent" open={open} drawerWidth={drawerWidth}>
         <CustomToolbar
           style={{
             padding: open ? theme.spacing(3, 2.5, 2) : theme.spacing(2),
@@ -125,8 +125,8 @@ export const UserProfileDrawer = (props) => {
             </Box> */}
           </Typography>
         </CustomToolbar>
-
       </Drawer>
+      }
     </>
   )
 }

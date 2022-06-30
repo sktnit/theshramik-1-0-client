@@ -1,5 +1,5 @@
 import React from 'react'
-import { makeStyles } from '@mui/styles'
+import makeStyles from '@mui/styles/makeStyles'
 import ResponsiveAppBar from './NewResponsiveAppBar'
 import CustomDrawer from './CustomDrawer'
 import AboutLandingPage from './AboutLandingPage'

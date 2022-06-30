@@ -10,7 +10,7 @@ import Step from '@mui/material/Step/Step'
 import StepLabel from '@mui/material/StepLabel/StepLabel'
 import Container from '@mui/material/Container/Container'
 
-import { makeStyles } from '@mui/styles'
+import makeStyles from '@mui/styles/makeStyles'
 import theme from '../../theme'
 import UsersSelector from './NewUserSelector'
 import ActionButtons from './ActionButtons'

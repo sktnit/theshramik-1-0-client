@@ -1,9 +1,6 @@
 import React from 'react'
-import { constants } from '../../constants'
-import upperCase from 'lodash/upperCase'
-import { makeStyles } from '@mui/styles'
+import makeStyles from '@mui/styles/makeStyles'
 // const { CustomButton } = React.lazy(() => import('../shared/CustomButton'))
-import { Card, CardActionArea, CardContent, CardMedia, Typography } from '@mui/material'
 import LoginProfileCard from '../UserProfile/LoginProfileCard'
 
 const useStyles = makeStyles((theme) => ({

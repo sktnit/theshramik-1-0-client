@@ -1,5 +1,5 @@
 import React from 'react'
-import { makeStyles } from '@mui/styles'
+import makeStyles from '@mui/styles/makeStyles'
 import Grid from '@mui/material/Grid'
 import ShramikIcon from "../../media/shramik.svg"
 import ShramikConnectIcon from "../../media/shramikConnect.svg"
