@@ -10,7 +10,7 @@ import {
   signOut,
   signInWithPhoneNumber,
   RecaptchaVerifier,
-  // updateProfile,
+  updateProfile,
   sendEmailVerification
 } from "firebase/auth"
 import {
@@ -25,6 +25,8 @@ import {
   updateDoc,
   setDoc
 } from "firebase/firestore"
+
+import { ref, getStorage, uploadBytes, getDownloadURL } from "firebase/storage"
 
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -43,7 +45,7 @@ const app = initializeApp(firebaseConfig)
 const auth = getAuth(app)
 
 const db = getFirestore(app)
-
+const storage = getStorage(app)
 const googleProvider = new GoogleAuthProvider()
 
 const signInWithGoogle = async () => {
@@ -193,6 +195,30 @@ async function updateUserData(docId, user) {
   return await updateDoc(doc(collectionRef, docId), user)
 }
 
+const uploadProfilePic = async (uid, image, file) => {
+  if (image && file && file.name) {
+    const fileExtension = file.name.split('.').pop()
+    const imageRef = ref(storage, `images/${uid}.${fileExtension}`)
+    const res = await uploadBytes(imageRef, image)
+    let photoUrl = ''
+    if (res) {
+      photoUrl = await getDownloadURL(imageRef)
+    }
+    if (photoUrl !== '') {
+      await updateAuthProfile({ photoUrl: photoUrl })
+      await updateUserData(uid, {
+        profilePic: photoUrl
+      })
+    }
+    return photoUrl
+  }
+}
+
+const updateAuthProfile = async (data) => {
+  const user = auth.currentUser
+  return await updateProfile(user, data)
+}
+
 export {
   auth,
   db,
@@ -207,5 +233,6 @@ export {
   generateRecaptcha,
   verifyOTP,
   updateUserData,
-  getUserData
+  getUserData,
+  uploadProfilePic
 }

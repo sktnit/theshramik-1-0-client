@@ -6,7 +6,9 @@ import Typography from '@mui/material/Typography'
 import Container from '@mui/material/Container'
 // import ProfileCard from './ProfileCard'
 import UserProfileDrawer from './UserProfileDrawer'
+import CustomToolbar from './CustomToolbar'
 // import CustomAppBar from './CustomAppBar'
+
 const drawerWidth = 280
 const useStyles = makeStyles(() => ({
   landingPageRoot: {
@@ -25,7 +27,7 @@ function LandingPage(props) {
   return (
     <Box className={classes.landingPageRoot}>
       <CssBaseline />
-      <UserProfileDrawer open={open} handleDrawer={handleDrawer} drawerWidth={drawerWidth} hideDrawer={props.hideDrawer}/>
+      <UserProfileDrawer open={open} handleDrawer={handleDrawer} drawerWidth={drawerWidth} hideDrawer={props.hideDrawer} />
       <Box
         component="main"
         sx={{ padding: '116px 16px', flexGrow: 1, width: { sm: `calc(100% - ${drawerWidth}px)` } }}

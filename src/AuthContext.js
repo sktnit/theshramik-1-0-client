@@ -62,7 +62,7 @@ export function UserDataProvider({ children }) {
     return <Spinner />
   }
 
-  return <UserDataContext.Provider value={{ userData }}>{children}</UserDataContext.Provider>
+  return <UserDataContext.Provider value={{ userData, setUserData }}>{children}</UserDataContext.Provider>
 }
 
 export function useAuthData() {

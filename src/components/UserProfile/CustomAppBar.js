@@ -2,13 +2,21 @@ import React from 'react'
 import MuiAppBar from '@mui/material/AppBar'
 import IconButton from '@mui/material/IconButton'
 import { styled, useTheme } from '@mui/material/styles'
-import { Avatar, Badge, Box, Container, Menu, MenuItem, Tooltip, Typography } from '@mui/material'
+import Avatar from '@mui/material/Avatar'
+import Badge from '@mui/material/Badge'
+import Box from '@mui/material/Box'
+import Container from '@mui/material/Container'
+import Menu from '@mui/material/Menu'
+import MenuItem from '@mui/material/MenuItem'
+import Tooltip from '@mui/material/Tooltip'
+import Typography from '@mui/material/Typography'
 import CustomToolbar from './CustomToolbar'
 import NotificationsIcon from '@mui/icons-material/Notifications'
 import useMediaQuery from '@mui/material/useMediaQuery/useMediaQuery'
 
 import PropTypes from 'prop-types'
 import { logout } from '../../firebase'
+import { useUserData } from '../../AuthContext'
 
 const AppBar = styled(MuiAppBar, {
   shouldForwardProp: (prop) => prop !== 'open' && prop !== 'drawerWidth',
@@ -59,6 +67,8 @@ function CustomAppBar(props) {
     setAnchorElUser(null)
   }
   const lg = useMediaQuery((theme) => theme.breakpoints.up('lg'))
+  const { userData } = useUserData()
+  
   return (
     <AppBar
       position="fixed"
@@ -90,7 +100,7 @@ function CustomAppBar(props) {
           <div style={{ marginLeft: 12 }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ padding: '8px' }}>
-                <Avatar alt="Remy Sharp" src="https://ui-avatars.com/api/?rounded=true" />
+                <Avatar alt={userData.name || ''} src={userData.profilePic || ''} />
               </IconButton>
             </Tooltip>
           </div>
