@@ -17,6 +17,7 @@ import useMediaQuery from '@mui/material/useMediaQuery/useMediaQuery'
 import PropTypes from 'prop-types'
 import { logout } from '../../firebase'
 import { useUserData } from '../../AuthContext'
+import { useNavigate } from 'react-router-dom'
 
 const AppBar = styled(MuiAppBar, {
   shouldForwardProp: (prop) => prop !== 'open' && prop !== 'drawerWidth',
@@ -48,7 +49,6 @@ const AppBar = styled(MuiAppBar, {
 function CustomAppBar(props) {
   const { open, drawerWidth } = props
   const theme = useTheme()
-  const settings = ['Profile', 'Account', 'Dashboard', 'Logout']
   const [anchorElNav, setAnchorElNav] = React.useState(null)
   const [anchorElUser, setAnchorElUser] = React.useState(null)
 
@@ -63,12 +63,22 @@ function CustomAppBar(props) {
     setAnchorElNav(null)
   }
 
-  const handleCloseUserMenu = () => {
+  const routeMap = {
+    'Home': '/home',
+    'Login': '/login',
+    'Profile': '/user-profile',
+    'Dashboard': '/admin-dashboard'
+  };
+  const navigate = useNavigate()
+  const handleCloseUserMenu = (value) => {
+    navigate(routeMap[value])
     setAnchorElUser(null)
+
   }
   const lg = useMediaQuery((theme) => theme.breakpoints.up('lg'))
   const { userData } = useUserData()
-  
+  const settings = userData.role === '0' ? ['Profile', 'Logout'] : userData.role  === '1' ? ['Home', 'Profile', 'Logout'] : ['Home', 'Dashboard', 'Profile', 'Logout']
+
   return (
     <AppBar
       position="fixed"
@@ -86,7 +96,7 @@ function CustomAppBar(props) {
         <Box sx={{ flexGrow: 1 }} />
         <Box sx={{ display: { xs: 'none', md: 'flex' }, flexDirection: 'row', alignItems: 'center' }}>
           <div style={{ marginLeft: 12 }}>
-            <IconButton
+            {/* <IconButton
               size="large"
               aria-label="show 17 new notifications"
               color="inherit"
@@ -95,7 +105,7 @@ function CustomAppBar(props) {
               <Badge badgeContent={17} color="error">
                 <NotificationsIcon />
               </Badge>
-            </IconButton>
+            </IconButton> */}
           </div>
           <div style={{ marginLeft: 12 }}>
             <Tooltip title="Open settings">
@@ -121,7 +131,7 @@ function CustomAppBar(props) {
             onClose={handleCloseUserMenu}
           >
             {settings.map((setting) => (
-              <MenuItem key={setting} onClick={() => setting === 'Logout' ? logout() : handleCloseUserMenu()}>
+              <MenuItem key={setting} onClick={() => setting === 'Logout' ? logout() : handleCloseUserMenu(setting)}>
                 <Typography textAlign="center">{setting}</Typography>
               </MenuItem>
             ))}
