@@ -73,7 +73,7 @@ function NewRegister() {
       ...prevState,
       ...obj
     }))
-    if (key === 'userType' || key === 'signUpType') handleNext()
+    if (key === 'role' || key === 'signUpType') handleNext()
   }
   const handleBack = () => {
     setState(prevState => ({

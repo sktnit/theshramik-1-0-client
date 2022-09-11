@@ -36,10 +36,10 @@ const useStyles = makeStyles((theme) => ({
 
 export default function UsersSelector(props) {
   const classes = useStyles()
-  const [userType, setUserType] = React.useState('Employee')
+  const [role, setUserType] = React.useState('Employee')
   const handleChange = (event) => {
     setUserType(event.target.value)
-    props.handleChange('userType', constants.USER_TYPES[upperCase(event.target.value)])
+    props.handleChange('role', constants.USER_TYPES[upperCase(event.target.value)])
   }
   const buttons = [
     {
@@ -84,7 +84,7 @@ export default function UsersSelector(props) {
         <RadioGroup
           row={mediumScreen}
           aria-labelledby="users-radio-buttons-group-label"
-          value={userType}
+          value={role}
           onChange={handleChange}
         >
           {Object.keys(constants.USER_TYPES).map(key => (<FormControlLabel
@@ -126,7 +126,7 @@ export default function UsersSelector(props) {
         open={open}
         onClose={handleClose}
         signUpType={signUpType === 'phone' ? 'Mobile Number' : 'Email'}
-        userType={userType}
+        role={role}
         handleSubmit={() => props.handleChange('signUpType', signUpType)}
       /> */}
     </div>
@@ -139,7 +139,7 @@ export default function UsersSelector(props) {
 // });
 
 // function SimpleDialog(props) {
-//   const { onClose, open, signUpType, userType, handleSubmit } = props
+//   const { onClose, open, signUpType, role, handleSubmit } = props
 
 //   const handleClose = () => {
 //     onClose()
@@ -152,7 +152,7 @@ export default function UsersSelector(props) {
 //       TransitionComponent={Transition}
 //       keepMounted
 //     >
-//       <DialogTitle style={{ textAlign: 'center' }}>Hey {userType}!</DialogTitle>
+//       <DialogTitle style={{ textAlign: 'center' }}>Hey {role}!</DialogTitle>
 //       <DialogContent sx={{ paddingBottom: 0 }}>
 //         <DialogContentText>
 //           You selected {signUpType} to create your Account. Click Continue.
@@ -170,6 +170,6 @@ export default function UsersSelector(props) {
 //   onClose: PropTypes.func.isRequired,
 //   open: PropTypes.bool.isRequired,
 //   signUpType: PropTypes.string.isRequired,
-//   userType: PropTypes.string.isRequired,
+//   role: PropTypes.string.isRequired,
 //   handleSubmit: PropTypes.func.isRequired
 // }

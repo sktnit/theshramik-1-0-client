@@ -1,4 +1,6 @@
 import * as Yup from 'yup'
+import moment from 'moment';
+import { constants } from './constants';
 
 const emailValidator = () => {
   const sQtext = '[^\\x0d\\x22\\x5c\\x80-\\xff]'
@@ -23,15 +25,23 @@ const phoneValidator = () => {
 }
 const useValidate = ({
   firstname,
+  lastname,
   password,
   confirmPassword,
   acceptTerms,
   email,
-  phone
+  phone,
+  dob,
+  gender,
+  personWithDisability,
+  community
 }) => {
   let validationShape = {}
   if (firstname) {
     validationShape.firstname = Yup.string().required('Firstname is required')
+  }
+  if (lastname) {
+    validationShape.lastname = Yup.string()
   }
   if (password) {
     validationShape.password = Yup.string()
@@ -66,6 +76,35 @@ const useValidate = ({
         phoneValidator(),
         `Invalid phone number.`
       )
+  }
+  if (dob) {
+    validationShape.dob = Yup.string()
+      .required('Date of Birth is required')
+      .nullable()
+      .test("dob", "Please choose a valid date of birth", (value) => {
+        return moment().diff(moment(value, ["MM-DD-YYYY"]), "years") >= 18;
+      })
+  }
+  if (personWithDisability) {
+    validationShape.personWithDisability = Yup.string()
+      .required('Person with disablitiy is required')
+      .test("personWithDisability", (value) => {
+        return constants.PERSON_WITH_DISABILITY.includes(value.charAt(0).toUpperCase() + value.slice(1));
+      })
+  }
+  if (gender) {
+    validationShape.gender = Yup.string()
+      .required('Gender is required')
+      .test("gender", (value) => {
+        return constants.GENDER.includes(value.charAt(0).toUpperCase() + value.slice(1));
+      })
+  }
+  if (community) {
+    validationShape.community = Yup.string()
+      .required('Community is required')
+      .test("community", (value) => {
+        return constants.COMMUNITY.includes(value.charAt(0).toUpperCase() + value.slice(1));
+      })
   }
   const validationSchema = Yup.object().shape(validationShape)
   return validationSchema

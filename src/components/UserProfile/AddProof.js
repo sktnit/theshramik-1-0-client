@@ -1,17 +1,16 @@
 import React from 'react'
 import makeStyles from '@mui/styles/makeStyles'
-import { Card, Container, FormControl, FormHelperText, FormLabel, Grid, InputLabel, MenuItem, NativeSelect, Paper, Radio, RadioGroup, Select, TextField, Typography } from '@mui/material'
+import { Grid, Container, FormControl, Paper, Radio, RadioGroup, Typography } from '@mui/material'
 import useTheme from '@mui/material/styles/useTheme'
 import useMediaQuery from '@mui/material/useMediaQuery/useMediaQuery'
 import FormControlLabel from '@mui/material/FormControlLabel'
 import Button from '@mui/material/Button'
 import 'react-phone-input-2/lib/material.css'
-import { pink } from '@mui/material/colors'
-import SimpleUploader from '../shared/SimpleUploader'
-import Dialog from '@mui/material/Dialog'
+import pink from '@mui/material/colors/pink'
 import AlertDialogSlide from './AlertDialogSlide'
 import Box from '@mui/material/Box'
-
+import AddImage from '../shared/AddImage'
+import Theme from '../../theme'
 
 const useStyles = makeStyles((theme) => ({
   dropzone: {
@@ -43,56 +42,20 @@ const useStyles = makeStyles((theme) => ({
     marginLeft: '16px'
   }
 }))
-function AddProof() {
+function AddProof(props) {
   const classes = useStyles()
   const theme = useTheme()
   const sm = useMediaQuery((theme) => theme.breakpoints.down('md'))
   const mediumScreen = useMediaQuery((theme) => theme.breakpoints.up('sm'))
-  const [idProofType, setIdProofType] = React.useState('')
-
-  const handleChange = (event) => {
-    setIdProofType(event.target.value)
-  }
-  const [data, setData] = React.useState({
-    imagePreviewSrc: '',
-    imageUploaded: false,
-    profile: ''
-  })
-  const handleSelectImage = async ({ meta, file, remove }, status) => {
-    try {
-      if (status === 'done') {
-        const logoImage = file
-        console.log('file==>', file.name, file.type)
-        const reader = new FileReader()
-        reader.readAsDataURL(logoImage)
-        reader.onload = async (event) => {
-          await setData({
-            ...data,
-            prevProfilePic: data.imagePreviewSrc,
-            profilePic: event.target.result,
-            imagePreviewSrc: event.target.result,
-            imageUploaded: true,
-            file: file
-          })
-        }
-        remove()
-      }
-    } catch (err) {
-      remove()
-      console.log('DocumentUploadException', err)
-    }
+  const [data, setData] = React.useState({})
+  const handleChange = async (key, value) => {
+    setData({
+      ...data,
+      [key]: value
+    })
   }
 
-  const Preview = ({ meta }) => {
-    const { name, percent, status } = meta
-    return (
-      <span style={{ alignSelf: 'flex-start', margin: '10px 3%', fontFamily: 'Helvetica' }}>
-        {name}, {Math.round(percent)}%, {status}
-      </span>
-    )
-  }
-
-  console.log('idProofType==>', idProofType)
+  console.log('idProofType==>', data)
   return (
     <AlertDialogSlide>
       <Container maxWidth='lg' sx={{ margin: sm ? 4 : '0' }}>
@@ -115,7 +78,6 @@ function AddProof() {
                 <Box>
 
                   <Typography sx={{
-                    // margin: '16px auto 0px',
                     lineHeight: 1.5,
                     fontSize: '1.5rem',
                     fontFamily: '"Public Sans", sans-serif',
@@ -124,10 +86,9 @@ function AddProof() {
                     textAlign: 'center',
                     marginTop: '-54px'
                   }}>
-                    Upload Document
+                    Upload Aadhar
                   </Typography>
                   <Typography sx={{
-                    // margin: '16px auto 0px',
                     lineHeight: 1.5,
                     fontSize: '0.75rem',
                     fontFamily: '"Public Sans", sans-serif',
@@ -141,66 +102,11 @@ function AddProof() {
                 </Box>
               </Grid>
               <Grid item md={12} sm={12} xs={12}>
-                <FormControl sx={{ width: '100%' }}>
-                  <RadioGroup
-                    value={idProofType}
-                    onChange={handleChange}
-                  >
-                    {['aadhar card', 'voter id', 'driving licence'].map((item, index) => (
-                      <><FormControlLabel
-                        value={index}
-                        key={index}
-                        className={classes.selectorText}
-                        control={
-                          <Radio
-                            sx={{
-                              '&.Mui-checked': {
-                                color: pink[600],
-                                fontSize: 20,
-                                "&, & + .MuiFormControlLabel-label": {
-                                  fontSize: '20px',
-                                  color: pink[600]
-                                }
-                              }
-                            }}
-                          />
-                        }
-                        label={item}
-                      />
-                        {
-                          idProofType !== '' && idProofType === index.toString() && <div className={classes.addProofBox}>
-                            {/* <Dropzone
-                                  onChangeStatus={handleSelectImage}
-                                  accept="image/*"
-                                  className={classes.dropzone}
-                                  maxFiles={2}
-                                  multiple={false}
-                                  inputContent={<>
-                                    <Card className={`${classes.uploadImageButton}`}>
-                                      Upload&nbsp;{item}&nbsp;image
-                                      <Icons.CLOUD_UPLOAD_TWO_TONE_ICON className={classes.uploadIcon} />
-                                    </Card>
-                                  </>}>
-                                </Dropzone> */}
-                            {/* <Dropzone
-                                  getUploadParams={getUploadParams}
-                                  onSubmit={handleSubmit}
-                                  PreviewComponent={Preview}
-                                  inputContent={<>
-                                    <Card className={`${classes.uploadImageButton}`}>
-                                      Upload&nbsp;{item}&nbsp;image
-                                      <Icons.CLOUD_UPLOAD_TWO_TONE_ICON className={classes.uploadIcon} />
-                                    </Card>
-                                  </>}
-                                  disabled={files => files.some(f => ['preparing', 'getting_upload_params', 'uploading'].includes(f.meta.status))}
-                                /> */}
-                            <SimpleUploader />
-                          </div>
-                        }
-                      </>
-                    ))}
-                  </RadioGroup>
-                </FormControl>
+                <div className={classes.addProofBox}>
+                  <CardComponent key='front' label={'front'} error={data.frontError} title={'Front Image'} imagePreviewSrc={props.state.identityProof && props.state.identityProof.front} handleChange={async (value) => await handleChange('front', value)} />
+                  <CardComponent key='back' label={'back'} error={data.backError} title={'Back Image'} imagePreviewSrc={props.state.identityProof && props.state.identityProof.back} handleChange={async (value) => await handleChange('back', value)} />
+                  {/* <SimpleUploader /> */}
+                </div>
               </Grid>
             </Grid>
           </Box>
@@ -208,7 +114,16 @@ function AddProof() {
             <Button
               variant="contained"
               color="primary"
-              // onClick={handleSubmit(onSubmit)}
+              onClick={() => {
+                if (data.front && data.back) {
+                  props.handleChange('identityProof', data)
+                } else {
+                  if (!data.front)
+                    handleChange('frontError', true)
+                  if (!data.back)
+                    handleChange('backError', true)
+                }
+              }}
               style={{ textTransform: 'none' }}
             >
               Save
@@ -217,6 +132,32 @@ function AddProof() {
         </Paper>
       </Container>
     </AlertDialogSlide>
+  )
+}
+
+const CardComponent = (props) => {
+  const { title } = props
+  return (
+    <div style={{ margin: 8, width: 156 }}>
+      {title && <Typography sx={{
+        lineHeight: 1.5,
+        fontSize: '1rem',
+        fontFamily: '"Public Sans", sans-serif',
+        fontWeight: 600,
+        display: 'block',
+        textAlign: 'center'
+      }}>
+        {title}
+      </Typography>}
+      <div style={{ border: '2px solid', height: 152, width: 152, borderRadius: 8, display: 'flex', alignItems: 'center', padding: 2, borderColor: `${Theme.palette.primary.main}` }}>
+        <AddImage label={props.label} error={props.error} imagePreviewSrc={props.imagePreviewSrc} saveImageCallback={async (image) => await props.handleChange(image)} />
+      </div>
+      {
+        props.error && <Typography variant="inherit" color="textSecondary">
+          Upload {props.label} image of Aadhar
+        </Typography>
+      }
+    </div>
   )
 }
 

@@ -27,7 +27,7 @@ export const LoginProfileCard = React.memo(function SolidCard(props) {
             }
             selected = {props.selected === '0'}
             color={Theme.palette.card.yellow}
-            onClick={()=>props.handleChange('userType', '0')}
+            onClick={()=>props.handleChange('role', '0')}
           />
         </Grid>
         <Grid item>
@@ -38,7 +38,7 @@ export const LoginProfileCard = React.memo(function SolidCard(props) {
             }
             selected = {props.selected === '1'}
             color={Theme.palette.card.violet}
-            onClick={()=>props.handleChange('userType', '1')}
+            onClick={()=>props.handleChange('role', '1')}
           />
         </Grid>
       </Grid>

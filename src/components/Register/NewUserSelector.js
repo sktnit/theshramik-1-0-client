@@ -21,7 +21,7 @@ export default function UsersSelector(props) {
 
   return (
     <div className={classes.selectorRoot}>
-      <LoginProfileCard selected={props.state.userType} handleChange={props.handleChange}/>
+      <LoginProfileCard selected={props.state.role} handleChange={props.handleChange}/>
     </div>
   )
 }

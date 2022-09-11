@@ -1,9 +1,9 @@
 import React from 'react'
-import LandingPage from './LandingPage'
+import LandingPage from '../shared/LandingPage'
 import Slide from '@mui/material/Slide'
 import Dialog from '@mui/material/Dialog'
 import Box from '@mui/material/Box'
-import { useUserData } from '../../AuthContext'
+import { useAuthData, useUserData } from '../../AuthContext'
 import LoginProfileCard from './LoginProfileCard'
 import makeStyles from '@mui/styles/makeStyles'
 import { Card, Container, FormControl, FormHelperText, FormLabel, Grid, InputLabel, MenuItem, NativeSelect, Paper, Radio, RadioGroup, Select, TextField, Typography } from '@mui/material'
@@ -25,6 +25,10 @@ import Dropzone from 'react-dropzone-uploader'
 import { Icons } from '../shared/Icons'
 import AddProof from './AddProof'
 import AlertDialogSlide from './AlertDialogSlide'
+import { constants } from '../../constants'
+import UserProfileEdit from './UserProfileEdit'
+import { getUserData, updateData } from '../../firebase'
+import { useNavigate } from 'react-router-dom'
 // import SimpleUploader from '../shared/SimpleUploader'
 
 const Transition = React.forwardRef(function Transition(props, ref) {
@@ -48,27 +52,50 @@ const useStyles = makeStyles((theme) => ({
   },
   datePicker: {
     "& .Mui-error": {
-      color: 'grey',
+      color: '#d32f2f',
       "& .MuiOutlinedInput-notchedOutline": {
-        borderColor: 'rgb(192, 192, 192)'
+        borderColor: '#d32f2f'
       }
     }
   }
 }))
 
 function Details() {
+  const { currentUser } = useAuthData()
   const [state, setState] = React.useState({
     activeStep: 0
   })
-  const handleChange = (key, value) => {
-    const obj = {
-      [key]: value
+  const navigate = useNavigate()
+  const handleChange = async (key, value) => {
+    if (key && value) {
+      try {
+        if (typeof value === 'object' && key !== 'identityProof') {
+          await updateData('User', currentUser.uid, {
+            ...value
+          })
+          setState(prevState => ({
+            ...prevState,
+            ...value
+          }))
+        } else {
+          await updateData('User', currentUser.uid, {
+            [key]: value,
+            active: (state.role === '0' && state.activeStep === 4) || (state.role === '1' && state.activeStep === 3),
+          })
+          setState(prevState => ({
+            ...prevState,
+            [key]: value
+          }))
+        }
+        if ((state.role === '0' && state.activeStep === 4) || (state.role === '1' && state.activeStep === 3)) {
+          navigate('/')
+        } else {
+          handleNext()
+        }
+      } catch (e) {
+        console.log('Error while Saving', e)
+      }
     }
-    setState(prevState => ({
-      ...prevState,
-      ...obj
-    }))
-    if (key === 'userType' || key === 'signUpType') handleNext()
   }
 
   const handleNext = () => {
@@ -78,27 +105,36 @@ function Details() {
     }))
   }
 
-  const { userData } = useUserData();
-  console.log('userData==>', userData)
-  const step = 4
+  const { setUserData } = useUserData()
+
+  React.useEffect(() => {
+    (async () => {
+      const newUserData = (await getUserData(currentUser.uid)).data()
+      setUserData(newUserData)
+      setState(prevState => ({
+        ...prevState,
+        ...newUserData
+      }))
+    })()
+  }, [])
+  console.log()
+  const step = state.activeStep
   return (
     <LandingPage hideDrawer={true}>
       {
-        userData.role === undefined && step === 0 && <AddRole state={state} handleChange={handleChange} />
+        step === 0 && <AddRole state={state} handleChange={handleChange} />
       }
       {
-        userData.phoneNumber === undefined && step === 1 && <AddMobile state={state} handleChange={handleChange} />
+        step === 1 && <AddMobile phoneNumber={state.phoneNumber} state={state} handleChange={handleChange} />
       }
       {
-        userData.name === undefined && step === 2 && <AddShramikBio state={state} handleChange={handleChange} />
+        step === 2 && <AddBio state={state} handleChange={handleChange} />
       }
       {
-        // userData.name === undefined && step === 3 && <AddPhoto state={state} handleChange={handleChange} />
-        userData.name === undefined && step === 3 && <AddPhoto state={state} handleChange={handleChange} />
+        step === 3 && <AddPhoto state={state} handleChange={handleChange} />
       }
       {
-        // userData.name === undefined && step === 3 && <AddPhoto state={state} handleChange={handleChange} />
-        (userData.identityProof === undefined || !Object.keys(userData.identityProof).includes('documentUrl')) && step === 4 && <AddProof state={state} handleChange={handleChange} />
+        state.role === '0' && step === 4 && <AddProof state={state} handleChange={handleChange} />
       }
     </LandingPage>
   )
@@ -108,6 +144,7 @@ function AddRole(props) {
   const classes = useStyles()
   const theme = useTheme()
   const sm = useMediaQuery((theme) => theme.breakpoints.down('md'))
+
   return (
     <AlertDialogSlide>
       <Container sx={{ margin: sm ? 4 : '0' }}>
@@ -128,7 +165,7 @@ function AddRole(props) {
           <Typography>Select Service Type</Typography>
         </Paper>
         <div className={classes.selectorRoot}>
-          <LoginProfileCard selected={props.state.userType} handleChange={props.handleChange} />
+          <LoginProfileCard selected={props.state.role} handleChange={props.handleChange} />
         </div>
       </Container>
     </AlertDialogSlide>
@@ -151,6 +188,7 @@ function AddMobile(props) {
   })
   const onSubmit = async (data) => {
     console.log('data==>', '+' + data.phone)
+    props.handleChange('phoneNumber', '+' + data.phone);
   }
   const [focusMobileIF, setFocusMobileIF] = React.useState(true)
   return (
@@ -193,9 +231,10 @@ function AddMobile(props) {
                         }}
                         placeholder={'Enter your phone number'}
                         autoFocus={true}
+                        disabled={!!props.phoneNumber}
                         onlyCountries={['in']}
                         country='in'
-                        value={value}
+                        value={props.phoneNumber || value}
                         onChange={(phone) => onChange(phone)}
                         countryCodeEditable={false}
                         inputStyle={focusMobileIF ? {
@@ -223,7 +262,7 @@ function AddMobile(props) {
             <Button
               variant="contained"
               color="primary"
-              onClick={handleSubmit(onSubmit)}
+              onClick={() => props.phoneNumber ? props.handleChange('phoneNumber', props.phoneNumber) : handleSubmit(onSubmit)}
               style={{ textTransform: 'none' }}
             >
               Save
@@ -235,11 +274,10 @@ function AddMobile(props) {
   )
 }
 
-function AddShramikBio(props) {
+function AddBio(props) {
   const classes = useStyles()
-  const theme = useTheme()
   const sm = useMediaQuery((theme) => theme.breakpoints.down('md'))
-  let schemaObj = { firstname: true }
+  let schemaObj = { firstname: true, lastname: true, dob: true, gender: true, personWithDisability: props.state.role === '0', community: props.state.role === '0' }
   const validationSchema = useValidate(schemaObj)
   const {
     register,
@@ -247,42 +285,22 @@ function AddShramikBio(props) {
     handleSubmit,
     formState: { errors }
   } = useForm({
+    mode: "onChange",
     resolver: yupResolver(validationSchema)
   })
   const onSubmit = async (data) => {
     try {
-      console.log('data==>', data)
+      props.handleChange('userInfo', data)
     } catch (err) {
       console.log(err)
       console.log(err.message)
     }
-  }
-  const [value, setValue] = React.useState('')
-  const handleChange = (newValue) => {
-    setValue(newValue);
-  };
-
-  const [gender, setGender] = React.useState('');
-
-  const handleGender = (event) => {
-    setGender(event.target.value);
-  }
-  const [community, setCommunity] = React.useState('');
-
-  const handleCommunity = (event) => {
-    setCommunity(event.target.value);
-  }
-  const [personWithDisablity, setPersonWithDisablity] = React.useState('');
-
-  const handlePersonWithDisablity = (event) => {
-    setPersonWithDisablity(event.target.value);
   }
 
   return (
     <AlertDialogSlide>
       <Container maxWidth='lg' sx={{ margin: sm ? 4 : '0' }}>
         <Paper sx={{
-          // padding: '20px',
           backgroundColor: 'rgb(255, 255, 255)',
           color: 'rgb(33, 43, 54)',
           transition: 'box-shadow 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms',
@@ -292,13 +310,11 @@ function AddShramikBio(props) {
           borderRadius: '16px',
           zIndex: 0,
           padding: '80px 24px'
-          // textAlign: 'center'
         }}>
           <Box sx={{ display: 'flex', justifyContent: 'center' }}>
             <Grid container spacing={1} style={{ width: 512 }}>
               <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center' }}>
                 <Typography sx={{
-                  // margin: '16px auto 0px',
                   lineHeight: 1.5,
                   fontSize: '1.5rem',
                   fontFamily: '"Public Sans", sans-serif',
@@ -313,92 +329,120 @@ function AddShramikBio(props) {
               <Grid item md={6} sm={12} xs={12}>
                 <TextField
                   required
+                  defaultValue={props.state.firstname || ''}
                   id={"firstname"}
                   name={"firstname"}
                   label={"First Name"}
                   fullWidth
                   margin="dense"
                   {...register("firstname")}
-                  error={errors.email}
+                  error={errors.firstname ? true : false}
                 />
                 <Typography variant="inherit" color="textSecondary">
-                  {errors.email?.message}
+                  {errors.firstname?.message}
                 </Typography>
               </Grid>
               <Grid item md={6} sm={12} xs={12}>
                 <TextField
-                  // required
                   id="lastname"
+                  defaultValue={props.state.lastname || ''}
                   name="lastname"
                   label="Last Name"
                   type="lastname"
                   fullWidth
+                  {...register("lastname")}
                   margin="dense"
                 />
               </Grid>
               <Grid item md={6} sm={12} xs={12}>
-                <LocalizationProvider dateAdapter={AdapterDateFns}>
-                  <MobileDatePicker
-                    label="Date Of Birth"
-                    openTo="year"
-                    views={["year", "month", "day"]}
-                    inputFormat="dd-MM-yyyy"
-                    showToolbar={false}
-                    value={value}
-                    onChange={handleChange}
-                    renderInput={(params) => <TextField {...params} required fullWidth className={classes.datePicker} />}
-                  />
-                </LocalizationProvider>
+                <FormControlLabel
+                  sx={{ margin: 0, display: 'grid' }}
+                  control={
+                    <Controller
+                      control={control}
+                      name="dob"
+                      defaultValue={props.state.dob || ''}
+                      inputRef={register()}
+                      render={({ field: { onChange, value, name } }) => (
+                        <LocalizationProvider dateAdapter={AdapterDateFns}>
+                          <MobileDatePicker
+                            label="Date Of Birth"
+                            openTo="year"
+                            views={["year", "month", "day"]}
+                            inputFormat="dd-MM-yyyy"
+                            showToolbar={false}
+                            value={value}
+                            onChange={(newValue) => onChange(newValue)}
+                            renderInput={(params) =>
+                              <TextField {...params} required fullWidth className={classes.datePicker} {...register(name)} error={errors.dob ? true : false} />
+                            }
+                          />
+                        </LocalizationProvider>
+                      )}
+                    />
+                  }
+                />
+                <Typography variant="inherit" color="textSecondary">
+                  {errors.dob?.message}
+                </Typography>
               </Grid>
               <Grid item md={6} sm={12} xs={12}>
                 <FormControl required sx={{ width: '100%' }}>
-                  <InputLabel id="demo-simple-select-required-label">Gender</InputLabel>
+                  <InputLabel id="select-required-label-gender" error={errors.gender ? true : false}>Gender</InputLabel>
                   <Select
-                    id="demo-simple-select"
-                    value={gender}
+                    id="select-gender"
                     label="Gender"
-                    onChange={handleGender}
+                    defaultValue={props.state.gender || ''}
+                    {...register("gender")}
+                    error={errors.gender ? true : false}
                   >
-                    <MenuItem value={'male'}>Male</MenuItem>
-                    <MenuItem value={'female'}>Female</MenuItem>
-                    <MenuItem value={'Others'}>Others</MenuItem>
+                    {constants.GENDER.map((item, index) => <MenuItem key={item.toLowerCase()} value={item.toLowerCase()}>{item}</MenuItem>)}
                   </Select>
                 </FormControl>
+                <Typography variant="inherit" color="textSecondary">
+                  {errors.gender?.message}
+                </Typography>
               </Grid>
-              <Grid item md={6} sm={12} xs={12}>
-                <>
-                  <FormControl required sx={{ width: '100%' }}>
-                    <InputLabel id="demo-simple-select-required-label">Person With Disability</InputLabel>
-                    <Select
-                      id="demo-simple-select"
-                      value={personWithDisablity}
-                      label="Person With Disability"
-                      onChange={handlePersonWithDisablity}
-                    >
-                      <MenuItem value={'yes'}>Yes</MenuItem>
-                      <MenuItem value={'no'}>No</MenuItem>
-                    </Select>
-                  </FormControl>
-                </>
-              </Grid>
-              <Grid item md={6} sm={12} xs={12}>
-                <>
-                  <FormControl required sx={{ width: '100%' }}>
-                    <InputLabel id="demo-simple-select-required-label">Community</InputLabel>
-                    <Select
-                      // defaultValue={'hindu'}
-                      id="demo-simple-select"
-                      value={community}
-                      label="Community"
-                      onChange={handleCommunity}
-                    >
-                      <MenuItem value={'hindu'}>Hindu</MenuItem>
-                      <MenuItem value={'muslim'}>Muslim</MenuItem>
-                      <MenuItem value={'Others'}>Others</MenuItem>
-                    </Select>
-                  </FormControl>
-                </>
-              </Grid>
+              {props.state.role === '0' && <>
+                <Grid item md={6} sm={12} xs={12}>
+                  <>
+                    <FormControl required sx={{ width: '100%' }}>
+                      <InputLabel id="select-required-label-personWithDisability" error={errors.personWithDisability ? true : false}>Person With Disability</InputLabel>
+                      <Select
+                        id="select-personWithDisability"
+                        label="Person With Disability"
+                        defaultValue={props.state.personWithDisability || ''}
+                        {...register("personWithDisability")}
+                        error={errors.personWithDisability ? true : false}
+                      >
+                        {constants.PERSON_WITH_DISABILITY.map((item, index) => <MenuItem key={item.toLowerCase()} value={item.toLowerCase()}>{item}</MenuItem>)}
+                      </Select>
+                    </FormControl>
+                    <Typography variant="inherit" color="textSecondary">
+                      {errors.personWithDisability?.message}
+                    </Typography>
+                  </>
+                </Grid>
+                <Grid item md={6} sm={12} xs={12}>
+                  <>
+                    <FormControl required sx={{ width: '100%' }}>
+                      <InputLabel id="select-label-community" error={errors.community ? true : false}>Community</InputLabel>
+                      <Select
+                        defaultValue={props.state.community || ''}
+                        id="select-community"
+                        label="Community"
+                        {...register("community")}
+                        error={errors.community ? true : false}
+                      >
+                        {constants.COMMUNITY.map((item, index) => <MenuItem key={item.toLowerCase()} value={item.toLowerCase()}>{item}</MenuItem>)}
+                      </Select>
+                    </FormControl>
+                    <Typography variant="inherit" color="textSecondary">
+                      {errors.community?.message}
+                    </Typography>
+                  </>
+                </Grid>
+              </>}
             </Grid>
           </Box>
           <Box mt={3} sx={{ display: 'flex', justifyContent: 'center' }}>
@@ -425,17 +469,11 @@ function AddPhoto(props) {
     <AlertDialogSlide>
       <Container maxWidth='lg' sx={{ margin: sm ? 4 : '0' }}>
         <div className={classes.selectorRoot}>
-          <MyProfileNew />
+          <MyProfileNew handleChange={props.handleChange} />
         </div>
       </Container>
     </AlertDialogSlide>
   )
 }
-
-// function AddProof(props) {
-//  
-// }
-
-
 
 export default Details

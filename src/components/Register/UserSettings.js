@@ -54,7 +54,7 @@ export default function UsersSelector(props) {
         align={props.login ? "left" : "center"}
         margin="dense"
       >
-        {props.login ? 'Login' : <>Hey {props.state?.userType && constants.USER_TYPES_MESSAGE[props.state.userType]}!</>}
+        {props.login ? 'Login' : <>Hey {props.state?.role && constants.USER_TYPES_MESSAGE[props.state.role]}!</>}
       </Typography>
       <Grid classes={gridStyles} container spacing={4} wrap={'wrap'}>
         {buttons && buttons.length > 0 && buttons.map(item => (

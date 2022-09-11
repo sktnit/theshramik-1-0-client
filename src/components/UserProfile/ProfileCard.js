@@ -11,6 +11,8 @@ import makeStyles from '@mui/styles/makeStyles'
 import Theme from '../../theme'
 import Box from '@mui/system/Box'
 import StarIcon from '@mui/icons-material/Star'
+import HandWavingIcon from '../../media/hand_waving_emoji.png'
+
 const useStyles = makeStyles(() => ({
   profileCard: {
     '&::before': {
@@ -45,8 +47,9 @@ const labels = {
   4.5: 'Excellent',
   5: 'Excellent+',
 }
-export default function ProfileCard() {
+export default function ProfileCard(props) {
   const classes = useStyles()
+  const { profilePic, firstname, lastname, role } = props.state
   const value = 5
   return (
     <>
@@ -75,7 +78,7 @@ export default function ProfileCard() {
           <div className={classes.profileCardIntro}>
             <Avatar
               alt="Remy Sharp"
-              src="https://ui-avatars.com/api/?rounded=true"
+              src={profilePic || ''}
               // sx={{ width: 56, height: 56 }}
               sx={{
                 position: 'relative',
@@ -109,12 +112,32 @@ export default function ProfileCard() {
                   lineHeight: 1.5,
                   fontSize: '1.25rem',
                   fontFamily: 'Open Sans',
-                  color: 'rgb(255, 255, 255)'
+                  color: 'rgb(255, 255, 255)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center'
                 }}
               >
-                Shailesh Kumar Thakur
+                <img src={HandWavingIcon} alt='' style={{ height: '40px', paddingRight: '10px' }} />
+                &nbsp;
+                {firstname}{lastname ? ' ' + lastname : ''}
               </Typography>
               <Typography
+                variant='body1'
+                sx={{
+                  margin: 0,
+                  lineHeight: 2,
+                  fontSize: '1.2rem',
+                  fontFamily: 'Open Sans',
+                  color: 'rgb(255, 255, 255)',
+                  fontWeight: 400,
+                  opacity: 0.72,
+                  display: 'inline'
+                }}
+              >
+                View Your {role === '0' ? 'Shramik' : role === '1' ? 'Employer' : 'Manager'} Profile Here
+              </Typography>
+              {/* <Typography
                 variant='body1'
                 sx={{
                   margin: 0,
@@ -126,8 +149,8 @@ export default function ProfileCard() {
                   opacity: 0.72
                 }}
               >
-                Computer Science Engineer
-              </Typography>
+                
+              </Typography> 
               <div style={{ marginLeft: 'auto', marginRight: 'auto' }}>
                 <Rating
                   name="text-feedback"
@@ -140,8 +163,8 @@ export default function ProfileCard() {
                   emptyIcon={<StarIcon style={{ opacity: 0.55 }} fontSize="inherit" />}
                 >
                 </Rating>
-                {/* <Box sx={{ ml: 2 }}>{labels[value]}</Box> */}
-              </div>
+                <Box sx={{ ml: 2 }}>{labels[value]}</Box>
+              </div>*/}
             </Box>
           </div>
         </div>

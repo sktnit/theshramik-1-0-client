@@ -2,12 +2,8 @@ import React from 'react'
 import makeStyles from '@mui/styles/makeStyles'
 import Box from '@mui/material/Box'
 import CssBaseline from '@mui/material/CssBaseline'
-import Typography from '@mui/material/Typography'
 import Container from '@mui/material/Container'
-// import ProfileCard from './ProfileCard'
 import UserProfileDrawer from './UserProfileDrawer'
-import CustomToolbar from './CustomToolbar'
-// import CustomAppBar from './CustomAppBar'
 
 const drawerWidth = 280
 const useStyles = makeStyles(() => ({

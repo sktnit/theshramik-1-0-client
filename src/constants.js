@@ -31,5 +31,8 @@ export const constants = {
   },
   EMPLOYEE_KEYWORD: 'Shramik',
   EMPLOYER_KEYWORD: 'Employer',
-  ADMIN_KEYWORD: 'ADMIN'
+  ADMIN_KEYWORD: 'ADMIN',
+  GENDER: ['Male', 'Female', 'Others'],
+  PERSON_WITH_DISABILITY: ['Yes', 'No'],
+  COMMUNITY: ['Hindu', 'Muslim', 'Christian', 'Sikh', 'Jain', 'Bhuddhist', 'Others']
 }

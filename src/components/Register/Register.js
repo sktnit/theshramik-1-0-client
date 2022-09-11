@@ -63,7 +63,7 @@ function Register() {
   const classes = useStyles()
   const [state, setState] = React.useState({
     activeStep: 0,
-    userType: '0'
+    role: '0'
   })
   const handleChange = (key, value) => {
     const obj = {

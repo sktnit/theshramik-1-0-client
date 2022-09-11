@@ -7,7 +7,7 @@ import Grid from '@mui/material/Grid'
 import { Icons } from '../shared/Icons'
 import Dropzone from 'react-dropzone-uploader'
 import ImageEditor from './ImageEditor'
-import { Paper, Typography } from '@mui/material'
+import { Box, Button, Paper, Typography } from '@mui/material'
 // import { checkFileType } from './helper'
 import { useUserData } from '../../AuthContext'
 import { uploadProfilePic } from '../../firebase'
@@ -68,13 +68,13 @@ const useStyles = makeStyles((theme) => ({
   }
 }))
 
-export default function MyProfileNew() {
+export default function MyProfileNew(props) {
   const classes = useStyles()
   const { userData, setUserData } = useUserData()
   const [data, setData] = useState({
     imagePreviewSrc: userData.profilePic || '',
     imageUploaded: false,
-    profile: ''
+    profilePic: userData.profilePic 
   })
   const handleImageEditor = async (type, croppedImg) => {
     const result = await fetch(croppedImg)
@@ -82,17 +82,17 @@ export default function MyProfileNew() {
     console.log('type==>', type, result, blob, window.URL.createObjectURL(blob))
     if (type === 'save' && croppedImg) {
       setCropperOpen(false)
-      setData({
-        ...data,
-        profilePic: croppedImg,
-        imagePreviewSrc: croppedImg
-      })
       try {
         const profilePic = await uploadProfilePic(userData.uid, blob, data.file)
         console.log('profilePic upload==>', profilePic)
         setUserData({
           ...userData,
           profilePic: profilePic
+        })
+        setData({
+          ...data,
+          profilePic: profilePic,
+          imagePreviewSrc: croppedImg
         })
       } catch (err) {
         console.log('ImageUploadException==>', err)
@@ -132,39 +132,6 @@ export default function MyProfileNew() {
       remove()
       console.log('ImageExceptionError', err)
     }
-  }
-  const onImageSave = async () => {
-    // const file = data.imagePreviewSrc
-    // let getPreSignedUrl
-    // const teamId = helper.getDomain()
-    // if (file) {
-    //     const fileExtension = file.split(';')[0].replace(/^data:image\//, '')
-    //     const object = constants.USER_KEYWORD
-    //     const thumbnailUrl = data.userId + '.' + fileExtension
-    //     const fileType = file.split(';')[0].replace(/^data:/, '')
-    //     const data2 = helper.dataURItoBlob(file)
-    //     const params = [
-    //         { param: '{object}', value: object },
-    //         { param: '{thumbnailUrl}', value: thumbnailUrl },
-    //         { param: '{fileType}', value: fileType },
-    //         { param: '{teamId}', value: teamId }
-    //     ]
-    //     try {
-    //         const { preSignedUrl } = await httpHelper.get(httpHelper.getUri(urlConstants.getPreSignedUrlUnauthorized, params))
-    //         getPreSignedUrl = preSignedUrl
-    //         await helper.uploadImage(getPreSignedUrl, data2, fileType)
-    //         // setData({    
-    //         //     ...data,    
-    //         //     profile: getPreSignedUrl.split('?')[0] + "?" + Date.now()    
-    //         // })        // let imgObj = { ...data };     
-    //         // imgObj['profile'] = getPreSignedUrl.split('?')[0];       
-    //         const profilePicUrl = getPreSignedUrl.split('?')[0] + '?' + Date.now()
-    //         return profilePicUrl
-    //     } catch (e) {
-    //         await helper.handleUnauthorizedError(e)
-    //         console.log('Error:', e)
-    //     }
-    // }
   }
 
   const gridStyles = useGridStyles()
@@ -255,6 +222,16 @@ export default function MyProfileNew() {
           </div>
         </Grid>
       </Grid>
+      <Box mt={3} sx={{ display: 'flex', justifyContent: 'center' }}>
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={() => props.handleChange('profilePic', data.profilePic)}
+          style={{ textTransform: 'none' }}
+        >
+          Save
+        </Button>
+      </Box>
     </Paper>
   )
 }

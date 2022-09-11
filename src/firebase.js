@@ -23,7 +23,8 @@ import {
   where,
   addDoc,
   updateDoc,
-  setDoc
+  setDoc,
+  update
 } from "firebase/firestore"
 
 import { ref, getStorage, uploadBytes, getDownloadURL } from "firebase/storage"
@@ -44,10 +45,15 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig)
 const auth = getAuth(app)
 
+// get firestore to store data
 const db = getFirestore(app)
+
+// get file storage app
 const storage = getStorage(app)
+
 const googleProvider = new GoogleAuthProvider()
 
+// sign in with google option
 const signInWithGoogle = async () => {
   try {
     const res = await signInWithPopup(auth, googleProvider)
@@ -67,6 +73,7 @@ const signInWithGoogle = async () => {
   }
 }
 
+// sign in with login id and password
 const logInWithEmailAndPassword = async (email, password) => {
   try {
     await signInWithEmailAndPassword(auth, email, password)
@@ -75,7 +82,8 @@ const logInWithEmailAndPassword = async (email, password) => {
   }
 }
 
-const registerWithEmailAndPassword = async (name, email, password, userType) => {
+// register with email and password
+const registerWithEmailAndPassword = async (name, email, password, role) => {
   try {
     const { user } = await createUserWithEmailAndPassword(auth, email, password)
     if (user) {
@@ -87,8 +95,9 @@ const registerWithEmailAndPassword = async (name, email, password, userType) => 
         emailVerified: user.emailVerified,
         isAnonymous: user.isAnonymous,
         createdAt: user.metadata && user.metadata.createdAt,
-        role: userType,
-        active: false
+        role: role,
+        active: false,
+        verified: false
       })
     }
     await sendEmailVerification(auth.currentUser)
@@ -115,10 +124,7 @@ const resendEmailVerificationLink = async () => {
   }
 }
 
-const logout = () => {
-  signOut(auth)
-}
-
+// start: register and sign in with phone
 const generateRecaptcha = async (phoneNumber) => {
   return window.recaptchaVerifier = new RecaptchaVerifier('recaptcha-container', {
     'size': 'invisible',
@@ -134,6 +140,7 @@ const generateRecaptcha = async (phoneNumber) => {
   }, auth)
 }
 
+// sign in with phone
 const signInWithPhone = async (mynumber) => {
   if (mynumber === "" || mynumber.length < 10) return
   try {
@@ -145,18 +152,7 @@ const signInWithPhone = async (mynumber) => {
   }
 }
 
-// Validate OTP
-const validateOtp = async (otp, enteredOtp) => {
-  if (otp === null || enteredOtp === null)
-    return
-  try {
-    await enteredOtp.confirm(otp)
-  } catch (err) {
-    console.log(err)
-    console.log("Wrong code")
-  }
-}
-
+// otp verification code
 const verifyOTP = async (otp) => {
   try {
     let confirmationResult = window.confirmationResult
@@ -170,12 +166,31 @@ const verifyOTP = async (otp) => {
           phoneNumber: user.phoneNumber,
           phoneVerified: true,
           createdAt: user.metadata && user.metadata.createdAt,
-          active: false
+          active: false,
+          verified: false
         })
       }
     }
   } catch (error) {
     console.log('VerifyOTPException', error)
+    console.log("Wrong code")
+  }
+}
+// end : register and sign in with phone
+
+// logout
+const logout = () => {
+  signOut(auth)
+}
+
+// Validate OTP
+const validateOtp = async (otp, enteredOtp) => {
+  if (otp === null || enteredOtp === null)
+    return
+  try {
+    await enteredOtp.confirm(otp)
+  } catch (err) {
+    console.log(err)
     console.log("Wrong code")
   }
 }
@@ -197,13 +212,7 @@ async function updateUserData(docId, user) {
 
 const uploadProfilePic = async (uid, image, file) => {
   if (image && file && file.name) {
-    const fileExtension = file.name.split('.').pop()
-    const imageRef = ref(storage, `images/${uid}.${fileExtension}`)
-    const res = await uploadBytes(imageRef, image)
-    let photoUrl = ''
-    if (res) {
-      photoUrl = await getDownloadURL(imageRef)
-    }
+    const photoUrl = await uploadFile('images', image, file)
     if (photoUrl !== '') {
       await updateAuthProfile({ photoUrl: photoUrl })
       await updateUserData(uid, {
@@ -214,9 +223,29 @@ const uploadProfilePic = async (uid, image, file) => {
   }
 }
 
+const uploadFile = async (folder, image, file, key) => {
+  const user = auth.currentUser
+  if (user && image && file && file.name) {
+    const fileExtension = file.name.split('.').pop()
+    const imageRef = ref(storage, `${folder}/${user.uid}${key ? '_' + key : ''}.${fileExtension}`)
+    const res = await uploadBytes(imageRef, image)
+    let photoUrl = ''
+    if (res) {
+      photoUrl = await getDownloadURL(imageRef)
+    }
+    console.log('photoUrl==>', photoUrl)
+    return photoUrl
+  }
+}
+
 const updateAuthProfile = async (data) => {
   const user = auth.currentUser
   return await updateProfile(user, data)
+}
+
+async function updateData(tableName, docId, data) {
+  const collectionRef = collection(db, tableName)
+  return await updateDoc(doc(collectionRef, docId), data)
 }
 
 export {
@@ -233,6 +262,8 @@ export {
   generateRecaptcha,
   verifyOTP,
   updateUserData,
+  updateData,
   getUserData,
-  uploadProfilePic
+  uploadProfilePic,
+  uploadFile
 }

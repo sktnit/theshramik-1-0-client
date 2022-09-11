@@ -65,7 +65,7 @@ function UserForm(props) {
   const onSubmit = async (data) => {
     try {
       if (props.state?.signUpType === 'email') {
-        await registerWithEmailAndPassword(data.firstname, data.email, data.password, props.state.userType)
+        await registerWithEmailAndPassword(data.firstname, data.email, data.password, props.state.role)
         props.handleChange('showVerifyEmail', true)
       }
     } catch (err) {
@@ -121,7 +121,7 @@ function UserForm(props) {
           align={"center"}
           margin="dense"
         >
-          Hey {props.state?.userType && constants.USER_TYPES_MESSAGE[props.state.userType]}! <br />Create Your Account
+          Hey {props.state?.role && constants.USER_TYPES_MESSAGE[props.state.role]}! <br />Create Your Account
         </Typography>
         <Box sx={{ display: 'flex', justifyContent: 'center' }}>
           <Grid container spacing={1} style={{ width: 512 }}>
