@@ -1,14 +1,28 @@
 import React from 'react'
 import makeStyles from '@mui/styles/makeStyles'
-import { Card, Container, FormControl, FormHelperText, FormLabel, Grid, InputLabel, MenuItem, NativeSelect, Paper, Radio, RadioGroup, Select, TextField, Typography } from '@mui/material'
-import useTheme from '@mui/material/styles/useTheme'
+import Container from '@mui/material/Container'
+import FormControl from '@mui/material/FormControl'
+import Grid from '@mui/material/Grid'
+import Paper from '@mui/material/Paper'
+// import InputLabel from '@mui/material/InputLabel'
+// import MenuItem from '@mui/material/MenuItem'
+// import Dialog from '@mui/material/Dialog'
+// import Card from '@mui/material/Card'
+// import FormHelperText from '@mui/material/FormHelperText'
+// import FormLabel from '@mui/material/FormLabel'
+// import NativeSelect from '@mui/material/NativeSelect'
+// import Select from '@mui/material/Select'
+// import TextField from '@mui/material/TextField'
+import Radio from '@mui/material/Radio'
+import RadioGroup from '@mui/material/RadioGroup'
+import Typography from '@mui/material/Typography'
+// import useTheme from '@mui/material/styles/useTheme'
 import useMediaQuery from '@mui/material/useMediaQuery/useMediaQuery'
 import FormControlLabel from '@mui/material/FormControlLabel'
 import Button from '@mui/material/Button'
 import 'react-phone-input-2/lib/material.css'
 import { pink } from '@mui/material/colors'
 import SimpleUploader from '../shared/SimpleUploader'
-import Dialog from '@mui/material/Dialog'
 import AlertDialogSlide from './AlertDialogSlide'
 import Box from '@mui/material/Box'
 
@@ -45,52 +59,52 @@ const useStyles = makeStyles((theme) => ({
 }))
 function AddProof() {
   const classes = useStyles()
-  const theme = useTheme()
+  // const theme = useTheme()
+  // const mediumScreen = useMediaQuery((theme) => theme.breakpoints.up('sm'))
   const sm = useMediaQuery((theme) => theme.breakpoints.down('md'))
-  const mediumScreen = useMediaQuery((theme) => theme.breakpoints.up('sm'))
   const [idProofType, setIdProofType] = React.useState('')
 
   const handleChange = (event) => {
     setIdProofType(event.target.value)
   }
-  const [data, setData] = React.useState({
-    imagePreviewSrc: '',
-    imageUploaded: false,
-    profile: ''
-  })
-  const handleSelectImage = async ({ meta, file, remove }, status) => {
-    try {
-      if (status === 'done') {
-        const logoImage = file
-        console.log('file==>', file.name, file.type)
-        const reader = new FileReader()
-        reader.readAsDataURL(logoImage)
-        reader.onload = async (event) => {
-          await setData({
-            ...data,
-            prevProfilePic: data.imagePreviewSrc,
-            profilePic: event.target.result,
-            imagePreviewSrc: event.target.result,
-            imageUploaded: true,
-            file: file
-          })
-        }
-        remove()
-      }
-    } catch (err) {
-      remove()
-      console.log('DocumentUploadException', err)
-    }
-  }
+  // const [data, setData] = React.useState({
+  //   imagePreviewSrc: '',
+  //   imageUploaded: false,
+  //   profile: ''
+  // })
+  // const handleSelectImage = async ({ meta, file, remove }, status) => {
+  //   try {
+  //     if (status === 'done') {
+  //       const logoImage = file
+  //       console.log('file==>', file.name, file.type)
+  //       const reader = new FileReader()
+  //       reader.readAsDataURL(logoImage)
+  //       reader.onload = async (event) => {
+  //         await setData({
+  //           ...data,
+  //           prevProfilePic: data.imagePreviewSrc,
+  //           profilePic: event.target.result,
+  //           imagePreviewSrc: event.target.result,
+  //           imageUploaded: true,
+  //           file: file
+  //         })
+  //       }
+  //       remove()
+  //     }
+  //   } catch (err) {
+  //     remove()
+  //     console.log('DocumentUploadException', err)
+  //   }
+  // }
 
-  const Preview = ({ meta }) => {
-    const { name, percent, status } = meta
-    return (
-      <span style={{ alignSelf: 'flex-start', margin: '10px 3%', fontFamily: 'Helvetica' }}>
-        {name}, {Math.round(percent)}%, {status}
-      </span>
-    )
-  }
+  // const Preview = ({ meta }) => {
+  //   const { name, percent, status } = meta
+  //   return (
+  //     <span style={{ alignSelf: 'flex-start', margin: '10px 3%', fontFamily: 'Helvetica' }}>
+  //       {name}, {Math.round(percent)}%, {status}
+  //     </span>
+  //   )
+  // }
 
   console.log('idProofType==>', idProofType)
   return (

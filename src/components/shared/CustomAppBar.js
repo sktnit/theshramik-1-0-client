@@ -3,15 +3,15 @@ import MuiAppBar from '@mui/material/AppBar'
 import IconButton from '@mui/material/IconButton'
 import { styled, useTheme } from '@mui/material/styles'
 import Avatar from '@mui/material/Avatar'
-import Badge from '@mui/material/Badge'
+// import Badge from '@mui/material/Badge'
 import Box from '@mui/material/Box'
-import Container from '@mui/material/Container'
+// import Container from '@mui/material/Container'
 import Menu from '@mui/material/Menu'
 import MenuItem from '@mui/material/MenuItem'
 import Tooltip from '@mui/material/Tooltip'
 import Typography from '@mui/material/Typography'
 import CustomToolbar from './CustomToolbar'
-import NotificationsIcon from '@mui/icons-material/Notifications'
+// import NotificationsIcon from '@mui/icons-material/Notifications'
 import useMediaQuery from '@mui/material/useMediaQuery/useMediaQuery'
 
 import PropTypes from 'prop-types'
@@ -49,19 +49,19 @@ const AppBar = styled(MuiAppBar, {
 function CustomAppBar(props) {
   const { open, drawerWidth } = props
   const theme = useTheme()
-  const [anchorElNav, setAnchorElNav] = React.useState(null)
+  // const [anchorElNav, setAnchorElNav] = React.useState(null)
   const [anchorElUser, setAnchorElUser] = React.useState(null)
 
-  const handleOpenNavMenu = (event) => {
-    setAnchorElNav(event.currentTarget)
-  }
+  // const handleOpenNavMenu = (event) => {
+  //   setAnchorElNav(event.currentTarget)
+  // }
   const handleOpenUserMenu = (event) => {
     setAnchorElUser(event.currentTarget)
   }
 
-  const handleCloseNavMenu = () => {
-    setAnchorElNav(null)
-  }
+  // const handleCloseNavMenu = () => {
+  //   setAnchorElNav(null)
+  // }
 
   const routeMap = {
     'Home': '/home',
@@ -110,7 +110,7 @@ function CustomAppBar(props) {
           <div style={{ marginLeft: 12 }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ padding: '8px' }}>
-                <Avatar alt={userData.name || ''} src={userData.profilePic || ''} />
+                <Avatar alt={userData.firstname || ''} src={userData.profilePic} />
               </IconButton>
             </Tooltip>
           </div>
@@ -142,6 +142,9 @@ function CustomAppBar(props) {
   )
 }
 
-CustomAppBar.propTypes = {}
+CustomAppBar.propTypes = {
+  open: PropTypes.bool,
+  drawerWidth: PropTypes.any
+}
 
 export default CustomAppBar

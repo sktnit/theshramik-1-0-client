@@ -20,7 +20,7 @@ import makeStyles from '@mui/styles/makeStyles'
 
 import { CustomButton } from '../shared/CustomButton'
 import Typography from '@mui/material/Typography'
-
+import PropTypes from 'prop-types'
 const useStyles = makeStyles((theme) => ({
   selectorRoot: {
     display: 'flex',
@@ -59,11 +59,11 @@ export default function UsersSelector(props) {
   ]
   const mediumScreen = useMediaQuery((theme) => theme.breakpoints.up('sm'))
 
-  const [open, setOpen] = React.useState(false)
-  const [signUpType, setSignUpType] = React.useState('')
+  // const [open, setOpen] = React.useState(false)
+  // const [signUpType, setSignUpType] = React.useState('')
   const handleClick = (type) => {
     // setOpen(true)
-    setSignUpType(type)
+    // setSignUpType(type)
     props.handleChange('signUpType', type)
   }
 
@@ -133,6 +133,9 @@ export default function UsersSelector(props) {
   )
 }
 
+UsersSelector.propTypes = {
+  handleChange: PropTypes.func
+}
 
 // const Transition = React.forwardRef(function Transition(props, ref) {
 //   return <Slide direction="up" ref={ref} {...props} />

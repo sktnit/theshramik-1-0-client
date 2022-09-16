@@ -1,13 +1,27 @@
 import React from 'react'
-import LandingPage from '../shared/LandingPage'
-import Slide from '@mui/material/Slide'
-import Dialog from '@mui/material/Dialog'
+import AppLayout from '../shared/AppLayout'
+// import Slide from '@mui/material/Slide'
 import Box from '@mui/material/Box'
 import { useAuthData, useUserData } from '../../AuthContext'
 import LoginProfileCard from './LoginProfileCard'
 import makeStyles from '@mui/styles/makeStyles'
-import { Card, Container, FormControl, FormHelperText, FormLabel, Grid, InputLabel, MenuItem, NativeSelect, Paper, Radio, RadioGroup, Select, TextField, Typography } from '@mui/material'
-import useTheme from '@mui/material/styles/useTheme'
+import Container from '@mui/material/Container'
+import FormControl from '@mui/material/FormControl'
+import Grid from '@mui/material/Grid'
+import InputLabel from '@mui/material/InputLabel'
+import MenuItem from '@mui/material/MenuItem'
+import Paper from '@mui/material/Paper'
+// import Dialog from '@mui/material/Dialog'
+// import Card from '@mui/material/Card'
+// import FormHelperText from '@mui/material/FormHelperText'
+// import FormLabel from '@mui/material/FormLabel'
+// import NativeSelect from '@mui/material/NativeSelect'
+// import Radio from '@mui/material/Radio'
+// import RadioGroup from '@mui/material/RadioGroup'
+import Select from '@mui/material/Select'
+import TextField from '@mui/material/TextField'
+import Typography from '@mui/material/Typography'
+// import useTheme from '@mui/material/styles/useTheme'
 import useMediaQuery from '@mui/material/useMediaQuery/useMediaQuery'
 import FormControlLabel from '@mui/material/FormControlLabel'
 import { useForm, Controller } from 'react-hook-form'
@@ -20,20 +34,18 @@ import { MobileDatePicker } from '@mui/x-date-pickers/MobileDatePicker'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
 import MyProfileNew from './MyProfileNew'
-import { pink } from '@mui/material/colors'
-import Dropzone from 'react-dropzone-uploader'
-import { Icons } from '../shared/Icons'
 import AddProof from './AddProof'
 import AlertDialogSlide from './AlertDialogSlide'
 import { constants } from '../../constants'
-import UserProfileEdit from './UserProfileEdit'
 import { getUserData, updateData } from '../../firebase'
 import { useNavigate } from 'react-router-dom'
+import PropTypes from 'prop-types'
+
 // import SimpleUploader from '../shared/SimpleUploader'
 
-const Transition = React.forwardRef(function Transition(props, ref) {
-  return <Slide direction={props.in ? "left" : "right"} ref={ref} {...props} />
-})
+// const Transition = React.forwardRef(function Transition(props, ref) {
+//   return <Slide direction={props.in ? "left" : "right"} ref={ref} {...props} />
+// })
 
 const useStyles = makeStyles((theme) => ({
   selectorRoot: {
@@ -116,11 +128,10 @@ function Details() {
         ...newUserData
       }))
     })()
-  }, [])
-  console.log()
+  }, [currentUser.uid])
   const step = state.activeStep
   return (
-    <LandingPage hideDrawer={true}>
+    <AppLayout hideDrawer={true}>
       {
         step === 0 && <AddRole state={state} handleChange={handleChange} />
       }
@@ -136,13 +147,13 @@ function Details() {
       {
         state.role === '0' && step === 4 && <AddProof state={state} handleChange={handleChange} />
       }
-    </LandingPage>
+    </AppLayout>
   )
 }
 
 function AddRole(props) {
   const classes = useStyles()
-  const theme = useTheme()
+  // const theme = useTheme()
   const sm = useMediaQuery((theme) => theme.breakpoints.down('md'))
 
   return (
@@ -171,10 +182,14 @@ function AddRole(props) {
     </AlertDialogSlide>
   )
 }
+AddRole.propTypes = {
+  handleChange: PropTypes.func,
+  state: PropTypes.object
+}
 
 function AddMobile(props) {
   const classes = useStyles()
-  const theme = useTheme()
+  // const theme = useTheme()
   const sm = useMediaQuery((theme) => theme.breakpoints.down('md'))
   const schemaObj = { phone: true }
   const validationSchema = useValidate(schemaObj)
@@ -187,7 +202,6 @@ function AddMobile(props) {
     resolver: yupResolver(validationSchema)
   })
   const onSubmit = async (data) => {
-    console.log('data==>', '+' + data.phone)
     props.handleChange('phoneNumber', '+' + data.phone);
   }
   const [focusMobileIF, setFocusMobileIF] = React.useState(true)
@@ -272,6 +286,11 @@ function AddMobile(props) {
       </Container>
     </AlertDialogSlide>
   )
+}
+AddMobile.propTypes = {
+  handleChange: PropTypes.func,
+  state: PropTypes.object,
+  phoneNumber: PropTypes.string
 }
 
 function AddBio(props) {
@@ -461,9 +480,14 @@ function AddBio(props) {
   )
 }
 
+AddBio.propTypes = {
+  handleChange: PropTypes.func,
+  state: PropTypes.object
+}
+
 function AddPhoto(props) {
   const classes = useStyles()
-  const theme = useTheme()
+  // const theme = useTheme()
   const sm = useMediaQuery((theme) => theme.breakpoints.down('md'))
   return (
     <AlertDialogSlide>
@@ -474,6 +498,10 @@ function AddPhoto(props) {
       </Container>
     </AlertDialogSlide>
   )
+}
+
+AddPhoto.propTypes = {
+  handleChange: PropTypes.func
 }
 
 export default Details

@@ -6,12 +6,13 @@ import Card from '@mui/material/Card'
 // import Button from '@mui/material/Button'
 import Typography from '@mui/material/Typography'
 import Avatar from '@mui/material/Avatar'
-import Rating from '@mui/material/Rating'
+// import Rating from '@mui/material/Rating'
 import makeStyles from '@mui/styles/makeStyles'
 import Theme from '../../theme'
 import Box from '@mui/system/Box'
-import StarIcon from '@mui/icons-material/Star'
+// import StarIcon from '@mui/icons-material/Star'
 import HandWavingIcon from '../../media/hand_waving_emoji.png'
+import PropTypes from 'prop-types'
 
 const useStyles = makeStyles(() => ({
   profileCard: {
@@ -35,22 +36,22 @@ const useStyles = makeStyles(() => ({
   }
 }))
 
-const labels = {
-  0.5: 'Useless',
-  1: 'Useless+',
-  1.5: 'Poor',
-  2: 'Poor+',
-  2.5: 'Ok',
-  3: 'Ok+',
-  3.5: 'Good',
-  4: 'Good+',
-  4.5: 'Excellent',
-  5: 'Excellent+',
-}
+// const labels = {
+//   0.5: 'Useless',
+//   1: 'Useless+',
+//   1.5: 'Poor',
+//   2: 'Poor+',
+//   2.5: 'Ok',
+//   3: 'Ok+',
+//   3.5: 'Good',
+//   4: 'Good+',
+//   4.5: 'Excellent',
+//   5: 'Excellent+',
+// }
 export default function ProfileCard(props) {
   const classes = useStyles()
   const { profilePic, firstname, lastname, role } = props.state
-  const value = 5
+  // const value = 5
   return (
     <>
       <Box sx={{ marginBottom: 5 }}>
@@ -77,7 +78,7 @@ export default function ProfileCard(props) {
         <div className={classes.profileCard}>
           <div className={classes.profileCardIntro}>
             <Avatar
-              alt="Remy Sharp"
+              alt={firstname}
               src={profilePic || ''}
               // sx={{ width: 56, height: 56 }}
               sx={{
@@ -135,7 +136,7 @@ export default function ProfileCard(props) {
                   display: 'inline'
                 }}
               >
-                View Your {role === '0' ? 'Shramik' : role === '1' ? 'Employer' : 'Manager'} Profile Here
+                View Your {role === '0' ? 'Shramik' : role === '1' ? 'Employer' : 'Admin'} Profile Here
               </Typography>
               {/* <Typography
                 variant='body1'
@@ -171,4 +172,8 @@ export default function ProfileCard(props) {
       </Card>
     </>
   )
+}
+
+ProfileCard.propTypes = {
+  state: PropTypes.object
 }

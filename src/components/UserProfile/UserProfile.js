@@ -1,5 +1,5 @@
 import React from 'react'
-import LandingPage from '../shared/LandingPage'
+import AppLayout from '../shared/AppLayout'
 import MyProfileNew from '../MyProfile/MyProfileNew'
 import ProfileCard from './ProfileCard'
 import { useUserData } from '../../AuthContext'
@@ -7,10 +7,10 @@ function AboutUs() {
   const { userData } = useUserData()
   return (
     <>
-      <LandingPage>
+      <AppLayout>
         <ProfileCard state={userData}/>
         <MyProfileNew state={userData}/>
-      </LandingPage>
+      </AppLayout>
     </>
   )
 }

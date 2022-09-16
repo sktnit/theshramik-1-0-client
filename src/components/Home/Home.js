@@ -1,8 +1,10 @@
 import React from 'react'
+import AppLayout from '../shared/AppLayout'
 
 function Home() {
   return (
-    <div>Home</div>
+    <AppLayout>
+    </AppLayout>
   )
 }
 

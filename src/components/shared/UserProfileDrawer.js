@@ -1,7 +1,8 @@
 import React from 'react'
 // import PropTypes from 'prop-types'
 // import makeStyles from '@mui/styles/makeStyles'
-import { styled, useTheme } from '@mui/material/styles'
+import styled from '@mui/material/styles/styled'
+import useTheme from '@mui/material/styles/useTheme'
 import MuiDrawer from '@mui/material/Drawer'
 // import List from '@mui/material/List'
 // import MenuIcon from '@mui/icons-material/Menu'
@@ -16,14 +17,14 @@ import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import CustomToolbar from './CustomToolbar'
 import CustomAppBar from './CustomAppBar'
-import useMediaQuery from '@mui/material/useMediaQuery/useMediaQuery'
+// import useMediaQuery from '@mui/material/useMediaQuery/useMediaQuery'
 
 const openedMixin = (theme, drawerWidth) => ({
   width: drawerWidth,
-  transition: theme.transitions.create('width', {
-    easing: theme.transitions.easing.sharp,
-    duration: theme.transitions.duration.enteringScreen,
-  }),
+  // transition: theme.transitions.create('width', {
+  //   easing: theme.transitions.easing.sharp,
+  //   duration: theme.transitions.duration.enteringScreen,
+  // }),
   // overflowX: 'hidden',
   // color: 'rgb(33, 43, 54)',
   // boxShadow: 'none',
@@ -95,9 +96,14 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 )
 
 export const UserProfileDrawer = (props) => {
-  const { open, handleDrawer, drawerWidth, hideDrawer } = props
+  const {
+    open,
+    // handleDrawer,
+    drawerWidth,
+    hideDrawer
+  } = props
   const theme = useTheme()
-  const lg = useMediaQuery((theme) => theme.breakpoints.up('lg'))
+  // const lg = useMediaQuery((theme) => theme.breakpoints.up('lg'))
 
   return (
     <>

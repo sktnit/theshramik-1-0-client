@@ -23,8 +23,7 @@ import {
   where,
   addDoc,
   updateDoc,
-  setDoc,
-  update
+  setDoc
 } from "firebase/firestore"
 
 import { ref, getStorage, uploadBytes, getDownloadURL } from "firebase/storage"

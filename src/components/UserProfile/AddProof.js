@@ -1,17 +1,22 @@
 import React from 'react'
 import makeStyles from '@mui/styles/makeStyles'
-import { Grid, Container, FormControl, Paper, Radio, RadioGroup, Typography } from '@mui/material'
-import useTheme from '@mui/material/styles/useTheme'
+import Grid from '@mui/material/Grid'
+import Container from '@mui/material/Container'
+import Paper from '@mui/material/Paper'
+// import FormControl from '@mui/material/FormControl'
+// import Radio from '@mui/material/Radio'
+// import RadioGroup from '@mui/material/RadioGroup'
+// import FormControlLabel from '@mui/material/FormControlLabel'
+import Typography from '@mui/material/RadioGroup'
+// import useTheme from '@mui/material/styles/useTheme'
 import useMediaQuery from '@mui/material/useMediaQuery/useMediaQuery'
-import FormControlLabel from '@mui/material/FormControlLabel'
 import Button from '@mui/material/Button'
 import 'react-phone-input-2/lib/material.css'
-import pink from '@mui/material/colors/pink'
 import AlertDialogSlide from './AlertDialogSlide'
 import Box from '@mui/material/Box'
 import AddImage from '../shared/AddImage'
 import Theme from '../../theme'
-
+import PropTypes from 'prop-types'
 const useStyles = makeStyles((theme) => ({
   dropzone: {
     '& .dzu-dropzone': {
@@ -44,9 +49,9 @@ const useStyles = makeStyles((theme) => ({
 }))
 function AddProof(props) {
   const classes = useStyles()
-  const theme = useTheme()
+  // const theme = useTheme()
+  // const mediumScreen = useMediaQuery((theme) => theme.breakpoints.up('sm'))
   const sm = useMediaQuery((theme) => theme.breakpoints.down('md'))
-  const mediumScreen = useMediaQuery((theme) => theme.breakpoints.up('sm'))
   const [data, setData] = React.useState({})
   const handleChange = async (key, value) => {
     setData({
@@ -54,8 +59,6 @@ function AddProof(props) {
       [key]: value
     })
   }
-
-  console.log('idProofType==>', data)
   return (
     <AlertDialogSlide>
       <Container maxWidth='lg' sx={{ margin: sm ? 4 : '0' }}>
@@ -134,7 +137,10 @@ function AddProof(props) {
     </AlertDialogSlide>
   )
 }
-
+AddProof.propTypes = {
+  handleChange: PropTypes.func,
+  state: PropTypes.object
+}
 const CardComponent = (props) => {
   const { title } = props
   return (
@@ -161,4 +167,10 @@ const CardComponent = (props) => {
   )
 }
 
+CardComponent.propTypes = {
+  label: PropTypes.any,
+  error: PropTypes.any,
+  imagePreviewSrc: PropTypes.string,
+  handleChange: PropTypes.func
+}
 export default AddProof

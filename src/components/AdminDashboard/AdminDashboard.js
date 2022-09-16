@@ -1,9 +1,13 @@
 import React from 'react'
+import AppLayout from '../shared/AppLayout'
 
-function AdminDashboard() {
+function AdminDashboard(props) {
   return (
-    <div>AdminDashboard</div>
+    <AppLayout>
+    </AppLayout>
   )
 }
+
+AdminDashboard.propTypes = {}
 
 export default AdminDashboard

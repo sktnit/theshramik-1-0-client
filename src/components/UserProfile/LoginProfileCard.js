@@ -5,6 +5,8 @@ import ShramikIcon from "../../media/shramik.svg"
 import ShramikConnectIcon from "../../media/shramikConnect.svg"
 import CustomCard from './CustomCard'
 import Theme from '../../theme'
+import PropTypes from 'prop-types'
+
 const useGridStyles = makeStyles(({ breakpoints }) => ({
   root: {
     justifyContent: 'center',
@@ -45,5 +47,10 @@ export const LoginProfileCard = React.memo(function SolidCard(props) {
     </>
   )
 })
+
+LoginProfileCard.propTypes = {
+  handleChange: PropTypes.func,
+  selected: PropTypes.object
+}
 
 export default LoginProfileCard

@@ -49,7 +49,7 @@ function VerifyEmail() {
         alert(err.message)
       })
     }, 1000)
-  }, [navigate, currentUser])
+  }, [currentUser])
 
   useEffect(() => {
     let interval = null
@@ -63,7 +63,7 @@ function VerifyEmail() {
       clearInterval(interval)
     }
     return () => clearInterval(interval)
-  }, [timeActive, time, setTimeActive])
+  }, [])
 
   const resendEmailVerification = async () => {
     try {

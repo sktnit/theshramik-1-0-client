@@ -1,25 +1,26 @@
-import React, { useState, useContext } from 'react'
-import Avatar from '@mui/material/Avatar'
-import Container from '@mui/material/Container'
+import React, { useState } from 'react'
+// import Avatar from '@mui/material/Avatar'
+// import Container from '@mui/material/Container'
 import Card from '@mui/material/Card'
 import { makeStyles } from '@mui/styles'
 import Grid from '@mui/material/Grid'
 import { Icons } from '../shared/Icons'
 import Dropzone from 'react-dropzone-uploader'
 import ImageEditor from '../UserProfile/ImageEditor'
-import { Paper, Typography } from '@mui/material'
+import Typography from '@mui/material/Typography'
 // import { checkFileType } from './helper'
-import { useUserData } from '../../AuthContext'
+// import { useUserData } from '../../AuthContext'
 import { uploadFile } from '../../firebase'
+import PropTypes from 'prop-types'
 
-const useGridStyles = makeStyles(({ breakpoints }) => ({
-  root: {
-    justifyContent: 'center',
-    [breakpoints.up('md')]: {
-      justifyContent: 'center',
-    },
-  },
-}))
+// const useGridStyles = makeStyles(({ breakpoints }) => ({
+//   root: {
+//     justifyContent: 'center',
+//     [breakpoints.up('md')]: {
+//       justifyContent: 'center',
+//     },
+//   },
+// }))
 
 const useStyles = makeStyles((theme) => ({
   heading: {
@@ -70,7 +71,7 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 export default function AddImage(props) {
-  const { imagePreviewSrc, saveImageCallback, cropperRequired, label, error } = props
+  const { imagePreviewSrc, saveImageCallback, cropperRequired, label } = props
   const classes = useStyles()
   // const { userData } = useUserData()
   const [data, setData] = useState({
@@ -154,8 +155,7 @@ export default function AddImage(props) {
     }
   }
 
-  const gridStyles = useGridStyles()
-  console.log('data==>', data)
+  // const gridStyles = useGridStyles()
   return (
     <>
       <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center' }}>
@@ -196,4 +196,11 @@ export default function AddImage(props) {
       </Grid>
     </>
   )
+}
+
+AddImage.propTypes = {
+  imagePreviewSrc: PropTypes.any, 
+  saveImageCallback: PropTypes.func, 
+  cropperRequired: PropTypes.bool, 
+  label: PropTypes.any 
 }

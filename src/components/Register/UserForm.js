@@ -8,7 +8,7 @@ import TextField from '@mui/material/TextField'
 import Typography from '@mui/material/Typography'
 import { useForm, Controller } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
-import { Link, useNavigate, Outlet } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import makeStyles from '@mui/styles/makeStyles'
 // import { auth } from '../../firebase'
 // import { createUserWithEmailAndPassword, updateProfile, sendEmailVerification } from 'firebase/auth'
@@ -18,6 +18,7 @@ import { registerWithEmailAndPassword, signInWithPhone, verifyOTP } from '../../
 import useValidate from '../../validate'
 import PhoneInput from 'react-phone-input-2'
 import 'react-phone-input-2/lib/material.css'
+import PropTypes from 'prop-types'
 const useStyles = makeStyles((theme) => ({
   welcomeButtonTextDecorationNone: {
     textDecoration: 'none !important'
@@ -43,7 +44,7 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 function UserForm(props) {
-  const classes = useStyles()
+  // const classes = useStyles()
   const { currentUser } = useAuthData()
 
   let schemaObj = { firstname: true, password: true, confirmPassword: true, acceptTerms: true }
@@ -250,6 +251,10 @@ function UserForm(props) {
   )
 }
 
+UserForm.propTypes = {
+  state: PropTypes.object,
+  handleChange: PropTypes.func
+}
 const UserMobileRegistrationForm = (props) => {
   const {
     register,
@@ -345,5 +350,18 @@ const UserMobileRegistrationForm = (props) => {
       <div id='recaptcha-container'></div>
     </Box>
   )
+}
+UserMobileRegistrationForm.propTypes = {
+  register: PropTypes.any,
+  extended: PropTypes.bool,
+  control: PropTypes.any,
+  errors: PropTypes.any,
+  handleSubmit: PropTypes.func,
+  requestOTP: PropTypes.func,
+  focusMobileIF: PropTypes.any,
+  setFocusMobileIF: PropTypes.any,
+  handleChange: PropTypes.func,
+  handleVerifyOTP: PropTypes.func,
+  fullWidth: PropTypes.any
 }
 export default UserForm

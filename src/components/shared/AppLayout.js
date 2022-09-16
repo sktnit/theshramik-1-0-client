@@ -7,12 +7,12 @@ import UserProfileDrawer from './UserProfileDrawer'
 
 const drawerWidth = 280
 const useStyles = makeStyles(() => ({
-  landingPageRoot: {
+  AppLayoutRoot: {
     display: 'flex',
     minHeight: '100%'
   }
 }))
-function LandingPage(props) {
+function AppLayout(props) {
   const [open, setOpen] = React.useState(true)
 
   const handleDrawer = () => {
@@ -21,7 +21,7 @@ function LandingPage(props) {
 
   const classes = useStyles()
   return (
-    <Box className={classes.landingPageRoot}>
+    <Box className={classes.AppLayoutRoot}>
       <CssBaseline />
       <UserProfileDrawer open={open} handleDrawer={handleDrawer} drawerWidth={drawerWidth} hideDrawer={props.hideDrawer} />
       <Box
@@ -38,4 +38,4 @@ function LandingPage(props) {
   )
 }
 
-export default LandingPage
+export default AppLayout

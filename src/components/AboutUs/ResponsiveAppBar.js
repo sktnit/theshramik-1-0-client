@@ -11,15 +11,13 @@ import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
-import makeStyles from '@mui/styles/makeStyles'
+// import makeStyles from '@mui/styles/makeStyles'
 import Theme from '../../theme'
 import CssBaseline from '@mui/material/CssBaseline'
 import Logo from '../../media/logo.png'
 import CustomDrawer from "./CustomDrawer";
 import { logout } from "../../firebase";
 
-const useStyles = makeStyles((theme) => ({
-}))
 // const pages = ["Products", "Pricing", "Blog"];
 const pages = [];
 const settings = ["Profile", "Account", "Dashboard", "Logout"];

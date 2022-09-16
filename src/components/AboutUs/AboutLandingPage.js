@@ -7,8 +7,8 @@ import Grid from '@mui/material/Grid'
 import Toolbar from '@mui/material/Toolbar'
 import Typography from '@mui/material/Typography'
 import makeStyles from '@mui/styles/makeStyles'
-import useMediaQuery from '@mui/material/useMediaQuery/useMediaQuery'
-import useTheme from '@mui/material/styles/useTheme'
+// import useMediaQuery from '@mui/material/useMediaQuery/useMediaQuery'
+// import useTheme from '@mui/material/styles/useTheme'
 import ShramikCallingPic from "../../media/shramikPic.svg"
 import { Link } from 'react-router-dom'
 import { CustomButton } from '../shared/CustomButton'
@@ -81,8 +81,8 @@ const useStyles = makeStyles((theme) => ({
 }))
 function AboutLandingPage() {
   const classes = useStyles()
-  const lg = useMediaQuery((theme) => theme.breakpoints.up('lg'))
-  const theme = useTheme()
+  // const lg = useMediaQuery((theme) => theme.breakpoints.up('lg'))
+  // const theme = useTheme()
 
   return (
     <Container className={classes.root}>

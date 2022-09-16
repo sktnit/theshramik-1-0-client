@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import makeStyles from '@mui/styles/makeStyles'
 import Slider from '@mui/material/Slider'
-import Icons from '../shared/Icons'
+// import Icons from '../shared/Icons'
 import { Button } from '@mui/material'
 import AvatarEditor from 'react-avatar-editor'
 
@@ -133,6 +133,11 @@ function ImageEditor(props) {
   )
 }
 
-ImageEditor.propTypes = {}
+ImageEditor.propTypes = {
+  handleImageEditor: PropTypes.func,
+  align: PropTypes.string,
+  profilePic: PropTypes.string,
+
+}
 
 export default ImageEditor

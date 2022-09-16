@@ -1,6 +1,6 @@
 // import PropTypes from 'prop-types'
 import React, { Suspense } from 'react'
-import { BrowserRouter, Routes, Route, Navigate, Outlet, useLocation, useNavigate } from 'react-router-dom'
+import { BrowserRouter, Routes, Route, Navigate, Outlet, useLocation } from 'react-router-dom'
 import { Spinner } from './components/shared/Spinner'
 import { publicRoutes, protectedRoutes, privateRoutes } from './route'
 import { useAuthData, useUserData } from './AuthContext'

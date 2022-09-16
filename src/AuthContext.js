@@ -2,7 +2,7 @@ import React, { useContext } from 'react'
 import { Spinner } from './components/shared/Spinner'
 import { auth, getUserData } from './firebase'
 import { onAuthStateChanged } from 'firebase/auth'
-import cloneDeep from 'lodash/cloneDeep'
+// import cloneDeep from 'lodash/cloneDeep'
 import { constants } from './constants'
 
 const AuthContext = React.createContext()

@@ -4,10 +4,10 @@ import React from "react";
 import Dropzone from 'react-dropzone-uploader'
 // import 'react-dropzone-uploader/dist/styles.css'
 import { getDroppedOrSelectedFiles } from 'html5-file-selector'
-import { Card } from "@mui/material";
+import Card from "@mui/material/Card";
 import { Icons } from '../shared/Icons'
-import { makeStyles } from '@mui/styles'
-
+import makeStyles from '@mui/styles/makeStyles'
+// import PropTypes from 'prop-types'
 const useStyles = makeStyles((theme) => ({
   heading: {
     color: theme.palette.primary.text,
@@ -107,15 +107,15 @@ const SimpleUploader = () => {
 
   const InputChooseFile = ({ accept, onFiles, files, getFilesFromEvent }) => {
 
-    const text = files.length > 0 ? 'Add more files' : 'Choose files to upload'
+    // const text = files.length > 0 ? 'Add more files' : 'Choose files to upload'
 
-    const buttonStyle = {
-      backgroundColor: '#67b0ff',
-      color: '#fff',
-      cursor: 'pointer',
-      // padding: 15,
-      borderRadius: 30
-    }
+    // const buttonStyle = {
+    //   backgroundColor: '#67b0ff',
+    //   color: '#fff',
+    //   cursor: 'pointer',
+    //   // padding: 15,
+    //   borderRadius: 30
+    // }
 
     return (
       <label>
@@ -164,5 +164,7 @@ const SimpleUploader = () => {
     </div>
   );
 };
+SimpleUploader.propTypes = {
 
+}
 export default SimpleUploader;

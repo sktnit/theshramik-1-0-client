@@ -93,7 +93,6 @@ function Register() {
   //     activeStep: prevState.activeStep + 1
   //   }))
   // }
-  const lastStepIndex = 2
   return (
     <Container className={classes.root}>
       {state.showVerifyEmail ?

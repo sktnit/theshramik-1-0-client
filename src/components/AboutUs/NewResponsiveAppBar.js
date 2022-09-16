@@ -19,7 +19,7 @@ import Logo from '../../media/logo.png'
 import PropTypes from 'prop-types'
 import { logout } from '../../firebase'
 import Button from "@mui/material/Button";
-import Theme from '../../theme'
+// import Theme from '../../theme'
 import MenuIcon from "@mui/icons-material/Menu"
 import { useNavigate } from 'react-router-dom'
 
@@ -227,6 +227,10 @@ function CustomAppBar(props) {
   )
 }
 
-CustomAppBar.propTypes = {}
+CustomAppBar.propTypes = {
+  open: PropTypes.bool,
+  drawerWidth: PropTypes.string,
+  isAuthorized: PropTypes.bool
+}
 
 export default CustomAppBar

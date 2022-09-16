@@ -1,16 +1,20 @@
-import React, { useState, useContext } from 'react'
+import React, { useState } from 'react'
 import Avatar from '@mui/material/Avatar'
-import Container from '@mui/material/Container'
+// import Container from '@mui/material/Container'
 import Card from '@mui/material/Card'
-import { makeStyles } from '@mui/styles'
+import makeStyles from '@mui/styles/makeStyles'
 import Grid from '@mui/material/Grid'
 import { Icons } from '../shared/Icons'
 import Dropzone from 'react-dropzone-uploader'
 import ImageEditor from './ImageEditor'
-import { Box, Button, Paper, Typography } from '@mui/material'
+import Box from '@mui/material/Box'
+import Button from '@mui/material/Button'
+import Paper from '@mui/material/Paper'
+import Typography from '@mui/material/Typography'
 // import { checkFileType } from './helper'
 import { useUserData } from '../../AuthContext'
 import { uploadProfilePic } from '../../firebase'
+import PropTypes from 'prop-types'
 
 const useGridStyles = makeStyles(({ breakpoints }) => ({
   root: {
@@ -234,4 +238,9 @@ export default function MyProfileNew(props) {
       </Box>
     </Paper>
   )
+}
+
+
+MyProfileNew.propTypes = {
+  handleChange: PropTypes.func
 }

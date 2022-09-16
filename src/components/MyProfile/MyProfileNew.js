@@ -1,5 +1,13 @@
 import React from 'react'
-import { Box, Button, Card, Container, FormControl, FormHelperText, FormLabel, Grid, InputLabel, MenuItem, NativeSelect, Paper, Radio, RadioGroup, Select, TextField, Typography } from '@mui/material'
+import Box from '@mui/material/Box'
+import FormControl from '@mui/material/FormControl'
+import Grid from '@mui/material/Grid'
+import InputLabel from '@mui/material/InputLabel'
+import MenuItem from '@mui/material/MenuItem'
+import Paper from '@mui/material/Paper'
+import Select from '@mui/material/Select'
+import TextField from '@mui/material/TextField'
+import Typography from '@mui/material/Typography'
 import makeStyles from '@mui/styles/makeStyles'
 import FormControlLabel from '@mui/material/FormControlLabel'
 import { useForm, Controller } from 'react-hook-form'
@@ -11,7 +19,7 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import useValidate from '../../validate'
 import PhoneInput from 'react-phone-input-2'
 import 'react-phone-input-2/lib/material.css'
-
+import PropTypes from 'prop-types'
 const useStyles = makeStyles((theme) => ({
   selectorRoot: {
     display: 'flex',
@@ -52,15 +60,15 @@ function MyProfileNew(props) {
   const {
     register,
     control,
-    handleSubmit,
+    // handleSubmit,
     formState: { errors }
   } = useForm({
     resolver: yupResolver(validationSchema)
   })
-  const onSubmit = async (data) => {
-    console.log('data==>', '+' + data.phone)
-    props.handleChange('phoneNumber', '+' + data.phone);
-  }
+  // const onSubmit = async (data) => {
+  //   console.log('data==>', '+' + data.phone)
+  //   props.handleChange('phoneNumber', '+' + data.phone);
+  // }
   const [focusMobileIF, setFocusMobileIF] = React.useState(false)
 
   return (
@@ -96,7 +104,7 @@ function MyProfileNew(props) {
             <TextField
               disabled={true}
               required
-              defaultValue={props.state.role === '0' ? 'Shramik' : props.state.role === '1' ? 'Employer' : 'Manager'}
+              defaultValue={props.state.role === '0' ? 'Shramik' : props.state.role === '1' ? 'Employer' : 'Admin'}
               id={"role"}
               name={"role"}
               label={"Role"}
@@ -293,6 +301,10 @@ function MyProfileNew(props) {
       </Box>
     </Paper>
   )
+}
+
+MyProfileNew.propTypes = {
+  state: PropTypes.object
 }
 
 export default MyProfileNew

@@ -25,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
 export default function CustomDrawer() {
   const classes = useStyles()
   const drawerRef = React.useRef(null)
-  const [drawerHeight, setDrawerHeight] = React.useState()
+  // const [drawerHeight, setDrawerHeight] = React.useState()
   const [open, setOpen] = React.useState(false)
   const socialConnect = [
     {
@@ -36,13 +36,13 @@ export default function CustomDrawer() {
     {
       name: 'Twitter',
       icon: <Icon className={classes.iconRoot} sx={{ overflow: 'visible' }}>
-        <img className={classes.imageIcon} src={TwitterIcon} />
+        <img className={classes.imageIcon} src={TwitterIcon} alt=""/>
       </Icon>
     },
     {
       name: 'Instagram',
       icon: <Icon className={classes.iconRoot} sx={{ overflow: 'visible' }}>
-        <img className={classes.imageIcon} src={InstagramIcon} />
+        <img className={classes.imageIcon} src={InstagramIcon} alt=""/>
       </Icon>
     },
   ]
@@ -54,7 +54,7 @@ export default function CustomDrawer() {
   }, [])
 
   React.useEffect(() => {
-    setDrawerHeight(drawerRef.current && drawerRef.current.clientHeight)
+    // setDrawerHeight(drawerRef.current && drawerRef.current.clientHeight)
   }, [drawerRef])
   return (
     <Drawer
