@@ -23,7 +23,11 @@ import {
   where,
   addDoc,
   updateDoc,
-  setDoc
+  setDoc,
+  orderBy,
+  startAt,
+  startAfter,
+  limit
 } from "firebase/firestore"
 
 import { ref, getStorage, uploadBytes, getDownloadURL } from "firebase/storage"
@@ -247,6 +251,24 @@ async function updateData(tableName, docId, data) {
   return await updateDoc(doc(collectionRef, docId), data)
 }
 
+const getPaginatedData = async (...args) => {
+  const [tableName, orderByArr, lastVisible, PAGE_SIZE] = args
+  let constructArgs = []
+  if (orderByArr && orderByArr.length > 0) {
+    orderByArr.forEach(el => {
+      constructArgs.push(orderBy(el.sortedBy, el.sortedOrder))
+    })
+  }
+  if (lastVisible) {
+    constructArgs.push(startAfter(lastVisible))
+  }
+  if (PAGE_SIZE) {
+    constructArgs.push(limit(PAGE_SIZE))
+  }
+  const queryParams = query(collection(db, tableName), ...constructArgs);
+  const querySnapshot = await getDocs(queryParams);
+  return querySnapshot.size > 0 ? { data: querySnapshot, lastDoc: querySnapshot.docs[querySnapshot.docs.length - 1] } : {}
+}
 export {
   auth,
   db,
@@ -264,5 +286,6 @@ export {
   updateData,
   getUserData,
   uploadProfilePic,
-  uploadFile
+  uploadFile,
+  getPaginatedData
 }
